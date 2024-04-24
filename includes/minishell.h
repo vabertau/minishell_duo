@@ -1,9 +1,18 @@
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <dirent.h>
+# include <string.h>
+# include <stdio.h>
+# include <curses.h>
+# include <sys/ioctl.h>
+# include <stddef.h>
+# include <termios.h>
+# include <sys/stat.h>
 # include "../libftprintf/ft_printf.h"
 
 typedef enum s_type{
@@ -40,6 +49,7 @@ typedef struct s_data{
 	t_token	*token;
 	t_type type;
 	t_exec	*exec;
+	char	**env;
 	bool	*is_bq;
 }				t_data;
 
@@ -49,7 +59,7 @@ void	get_input(t_data *data);
 
 // ====== INIT_DATA ======
 
-void	init_data(t_data *data);
+void	init_data(t_data *data, char **env);
 
 // ===== CHECKER =====
 
@@ -88,3 +98,25 @@ void	init_exec(t_data *data);
 
 void	exit_free(t_data *data, int exit_code);
 void	free_bf_newprompt(t_data *data);
+
+// ====== EXEC ======
+
+char	*ft_strjoin_free1(char const *s1, char const *s2);
+
+// Prototypes des fonctions de gestion de redirection
+void	handle_input_redirection(t_token *redir);
+void	handle_output_redirection(t_token *redir);
+void	handle_here_document(t_token *redir);
+void	handle_append_redirection(t_token *redir);
+void	handle_redirections(t_exec *cmd);
+
+// Prototypes des fonctions d'exécution de commandes
+int	exec_cmd(t_data *shell, t_exec *cmd);
+int	executor(t_data *shell);
+
+// Prototype de la fonction de manipulation de chaînes et utilitaires
+char	*ft_strjoin_free1(char const *s1, char const *s2);
+int	ft_same_str(char *str1, char *str2, size_t n);
+
+// Prototype de la fonction de gestion des pipes
+int	init_pipes(t_data *shell, int *pipe_fds);

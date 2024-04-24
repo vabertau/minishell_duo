@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/23 18:10:40 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:20:36 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -689,10 +689,11 @@ int	main(int argc, char **argv, char **envp)
 	i = 0;
 	//while (1)
 	//{
-		init_data(&data);
+		init_data(&data, envp);
 		get_input(&data);
 		lexer(&data);
 		parser(&data);
+		executor(&data);
 		printf("cmdline = %s\n\n", data.cmdline);
 		printf("nb tokens = %i\n\n", data.nb_tokens);
 		printf("nb_cmd = %i\n\n", data.nb_cmd);
