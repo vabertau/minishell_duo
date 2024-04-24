@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/24 18:16:09 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/04/24 18:45:29 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ int executor(t_data *shell)
 				}
 
 				// Fermeture des descripteurs de fichier de pipe dans le processus enfant
-				for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
+				for (int j = 0; j < 2 * (shell->nb_cmd); j++) {
 					close(pipe_fds[j]);
 				}
 
