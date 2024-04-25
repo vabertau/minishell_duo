@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/25 13:39:02 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/04/25 15:33:05 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 						execve(ret, f, shell->env);
 
 			}
+			printf("command not found: %s\n", ++f[0]);
 		}
 	}
 	return 0;
