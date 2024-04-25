@@ -6,11 +6,37 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/25 12:15:25 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:28:09 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	minishell_loop(t_data data)
+{
+	get_input(&data);
+	lexer(&data);
+	parser(&data);
+	executor(&data);
+	return (0);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+	int		i;
+
+	(void)argc;
+	(void)argv;
+	i = 0;
+	while (1)
+	{
+		init_data(&data, envp);
+		minishell_loop(data);
+	}
+	exit_free(&data, 0); //tmp
+}
+
 /*
 int	main(int argc, char **argv, char **envp)
 {
@@ -674,78 +700,79 @@ int	main(int argc, char **argv, char **envp)
 
 // ==== FILL_REDIR ====
 
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-	// t_data	tmp;
-	// t_exec	*tmp_exec;
-	// t_type	test_type;
+	t_data	tmp;
+	t_exec	*tmp_exec;
+	t_type	test_type;
 	int		i;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	i = 0;
-	// while (1)
-	//{
+	while (1)
+	{
 		init_data(&data, envp);
 		get_input(&data);
 		lexer(&data);
 		parser(&data);
 		executor(&data);
-	// 	printf("cmdline = %s\n\n", data.cmdline);
-	// 	printf("nb tokens = %i\n\n", data.nb_tokens);
-	// 	printf("nb_cmd = %i\n\n", data.nb_cmd);
-	// 	tmp = data;
-	// 	test_type = WORD;
-	// 	while (tmp.token != NULL)
-	// 	{
-	// 		printf("word = %s\n", tmp.token->word);
-	// 		printf("type = %u\n", tmp.token->type);
-	// 		printf("is_bq = %i\n\n", data.is_bq[i]);
-	// 		tmp.token = tmp.token->next;
-	// 		i++;
-	// 	}
-	// 	i = 0;
-	// 	tmp_exec = data.exec;
-	// 	while (i < data.nb_cmd)
-	// 	{
-	// 		printf("full cmd = %s\n", tmp_exec->full_cmd);
-	// 		tmp_exec = tmp_exec->next;
-	// 		i++;
-	// 	}
-	// 	tmp_exec = data.exec;
-	// 	i = 0;
-	// 	while (tmp_exec != NULL)
-	// 	{
-	// 		i = 0;
-	// 		while (tmp_exec->split_cmd[i] != NULL)
-	// 		{
-	// 			printf("split cmd = %s\n", tmp_exec->split_cmd[i]);
-	// 			i++;
-	// 		}
-	// 		tmp_exec = tmp_exec->next;
-	// 	}
-	// 	tmp_exec = data.exec;
-	// 	i = 0;
-	// 	while (tmp_exec != NULL)
-	// 	{
-	// 		printf("nb redir = %i\n", tmp_exec->nb_redir);
-	// 		tmp_exec = tmp_exec->next;
-	// 	}
-	// 	tmp_exec = data.exec;
-	// 	i = 0;
-	// 	while (tmp_exec != NULL)
-	// 	{
-	// 		if (tmp_exec->redir)
-	// 		{
-	// 			printf("redir infile/outfile= %s\n", tmp_exec->redir->word);
-	// 			printf("redir type= %i\n\n", tmp_exec->redir->type);
-	// 		}
-	// 		tmp_exec = tmp_exec->next;
-	// 	}
-	// //	free_bf_newprompt(&data);
-	//}
+		printf("cmdline = %s\n\n", data.cmdline);
+		printf("nb tokens = %i\n\n", data.nb_tokens);
+		printf("nb_cmd = %i\n\n", data.nb_cmd);
+		tmp = data;
+		test_type = WORD;
+		while (tmp.token != NULL)
+		{
+			printf("word = %s\n", tmp.token->word);
+			printf("type = %u\n", tmp.token->type);
+			printf("is_bq = %i\n\n", data.is_bq[i]);
+			tmp.token = tmp.token->next;
+			i++;
+		}
+		i = 0;
+		tmp_exec = data.exec;
+		while (i < data.nb_cmd)
+		{
+			printf("full cmd = %s\n", tmp_exec->full_cmd);
+			tmp_exec = tmp_exec->next;
+			i++;
+		}
+		tmp_exec = data.exec;
+		i = 0;
+		while (tmp_exec != NULL)
+		{
+			i = 0;
+			while (tmp_exec->split_cmd[i] != NULL)
+			{
+				printf("split cmd = %s\n", tmp_exec->split_cmd[i]);
+				i++;
+			}
+			tmp_exec = tmp_exec->next;
+		}
+		tmp_exec = data.exec;
+		i = 0;
+		while (tmp_exec != NULL)
+		{
+			printf("nb redir = %i\n", tmp_exec->nb_redir);
+			tmp_exec = tmp_exec->next;
+		}
+		tmp_exec = data.exec;
+		i = 0;
+		while (tmp_exec != NULL)
+		{
+			if (tmp_exec->redir)
+			{
+				printf("redir infile/outfile= %s\n", tmp_exec->redir->word);
+				printf("redir type= %i\n\n", tmp_exec->redir->type);
+			}
+			tmp_exec = tmp_exec->next;
+		}
+		free_bf_newprompt(&data);
+	}
 	exit_free(&data, 0); //tmp
 }
+*/
