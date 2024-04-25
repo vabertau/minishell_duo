@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/24 18:42:01 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/04/25 12:15:25 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -687,7 +687,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	i = 0;
-	//while (1)
+	// while (1)
 	//{
 		init_data(&data, envp);
 		get_input(&data);
@@ -746,6 +746,6 @@ int	main(int argc, char **argv, char **envp)
 	// 		tmp_exec = tmp_exec->next;
 	// 	}
 	// //	free_bf_newprompt(&data);
-	// //}
+	//}
 	exit_free(&data, 0); //tmp
 }
