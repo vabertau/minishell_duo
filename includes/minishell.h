@@ -69,6 +69,7 @@ void	parsing_error(t_data *data);
 void	checks(t_data *data);
 void	check_schar_error(t_data *data);
 void	check_pipe_ext(t_data *data);
+void	check_empty(t_data *data);
 
 // ====== LEXER ======
 
