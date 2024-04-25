@@ -51,6 +51,7 @@ typedef struct s_data{
 	t_exec	*exec;
 	char	**env;
 	bool	*is_bq;
+	bool	sh_exit_loop;
 }				t_data;
 
 // ====== READLINE ======
@@ -98,6 +99,7 @@ void	init_exec(t_data *data);
 
 void	exit_free(t_data *data, int exit_code);
 void	free_bf_newprompt(t_data *data);
+void	set_exitloop_free(t_data *data);
 
 // ====== EXEC ======
 

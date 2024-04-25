@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:42:47 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/19 13:48:45 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:22:13 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_pipe_ext(t_data *data)
 	while (cmdline[i] && cmdline[i] == ' ')
 		i++;
 	if (cmdline[i] == '|')
-		parsing_error(data);
+		return ((void)parsing_error(data));
 	while (cmdline[i])
 		i++;
 	if (i > 0)
@@ -33,6 +33,6 @@ void	check_pipe_ext(t_data *data)
 	while (i > 0 && cmdline[i] == ' ')
 		i--;
 	if (i > 0 && cmdline[i] == '|')
-		parsing_error(data);
+		return ((void)parsing_error(data));
 }
 

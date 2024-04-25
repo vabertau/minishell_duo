@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/25 12:28:09 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:50:19 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	minishell_loop(t_data data)
 {
+	data.sh_exit_loop = 0;
 	get_input(&data);
 	lexer(&data);
 	parser(&data);

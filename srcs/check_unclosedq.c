@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:39:43 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/19 12:11:54 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:42:53 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	check_unclosedq(t_data *data)
 		if (cmdline[i] == '\'' && ft_strchr(&(cmdline[i + 1]), '\''))
 			i += skip_sq(&(cmdline[i])) + 1;
 		else if (cmdline[i] == '\'')
-			parsing_error(data);
+			return (parsing_error(data), -1);
 		if (cmdline[i] == '\"' && ft_strchr(&(cmdline[i + 1]), '\"'))
 			i += skip_dq(&(cmdline[i])) + 1;
 		else if (cmdline[i] == '\"')
-			parsing_error(data);
+			return (parsing_error(data), -1);
 		else
 			i++;
 	}

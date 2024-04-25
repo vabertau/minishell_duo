@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:51 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/25 12:16:24 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:22:27 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,15 @@ static void	check_empty(t_data *data)
 void	checks(t_data *data)
 {
 	check_empty(data);
+	if (data->sh_exit_loop)
+		return ;
 	check_unclosedq(data);
+	if (data->sh_exit_loop)
+		return ;
 	check_schar_error(data);
+	if (data->sh_exit_loop)
+		return ;
 	check_pipe_ext(data);
+	if (data->sh_exit_loop)
+		return ;
 }

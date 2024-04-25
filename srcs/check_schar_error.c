@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:06:04 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/24 17:22:01 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:10:44 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static int	check_if_next_is_pipe(char *cmdline)
 	return (0);
 }
 
-void	check_for_append_pipe(t_data *data)
+/*
+Returns 1 if error >| or >     | type is found
+*/
+static int	check_for_append_pipe(t_data *data)
 {
 	int	i;
 	char	*cmdline;
@@ -48,16 +51,17 @@ void	check_for_append_pipe(t_data *data)
 			while (cmdline[i] == '>' || cmdline[i] == '<' || cmdline[i] == ' ')
 				i++;
 			if (cmdline[i] == '|')
-				parsing_error(data);
+				return (1);
 		}
 		i++;
 	}
+	return (0);
 }
 
 /*
-Checks for >|, >   |...
+Checks for >    > return 1 if that error is found
 */
-void	check_for_append_space_append(t_data *data)
+static int	check_for_append_space_append(t_data *data)
 {
 	int	i;
 	char	*cmdline;
@@ -79,7 +83,7 @@ void	check_for_append_space_append(t_data *data)
 			if (cmdline[i] == '<' || cmdline[i] == '>')
 			{
 				if (space_found == 1)
-					parsing_error(data);
+					return (1);
 			}
 			space_found = 0;
 		}
@@ -94,12 +98,13 @@ void	check_for_append_space_append(t_data *data)
 			if (cmdline[i] == '<' || cmdline[i] == '>')
 			{
 				if (space_found == 1)
-					parsing_error(data);
+					return (1);
 			}
 			space_found = 0;
 		}
 		i++;
 	}
+	return (0);
 }
 
 void	check_schar_error(t_data *data)
@@ -117,14 +122,16 @@ void	check_schar_error(t_data *data)
 			i += skip_dq(&(cmdline[i]));
 		if (cmdline[i] == '|')
 			if (check_if_next_is_pipe(&(cmdline[i])) == 1)
-				parsing_error(data);
+				return ((void)parsing_error(data));
 		if ((cmdline[i] == '<' && cmdline[i + 1] == '<' && (cmdline[i + 2] == '<' || cmdline[i + 2] == '>'))
 			|| (cmdline[i] == '>' && cmdline[i + 1] == '>' && (cmdline[i + 2] == '>' || cmdline[i + 2] == '<'))
 			|| (cmdline[i] == '>' && cmdline[i + 1] == '<')
 			|| (cmdline[i] == '<' && cmdline[i + 1] == '>'))
-				parsing_error(data);
-		check_for_append_space_append(data);
-		check_for_append_pipe(data);
+				return ((void)parsing_error(data));
+		if (check_for_append_space_append(data) == 1)
+			return ((void)parsing_error(data));
+		if (check_for_append_pipe(data) == 1)
+			return ((void)parsing_error(data));
 		i++;
 	}
 }

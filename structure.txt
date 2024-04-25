@@ -1,5 +1,27 @@
 VALGRIND CMD: valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=readline.supp ./minishell
 
+1) get_input
+
+1) Check errors : checks(data)
+
+check_empty checks for empty cmdline, calls parsing_error if empty.
+
+check_unclosedq Checks for unclosed quotes in the beginning and returns parsing error if there are any.
+Better to check in the beginning, allows not to handle unclosed quotes in tokens
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------
+
 shell->cmdline is filled with cmd line using readline
 
 insert_space
@@ -115,6 +137,9 @@ Commande vide : segfault MOI A GEERER
 Seulement espacces ou tabs : segfault
 
 Exit ne quitte pas le terminal
+
+---------------------------------
+
 
 
 

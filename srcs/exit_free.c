@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:02:38 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/24 16:29:20 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:28:17 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ void	free_exec(t_data *data)
 	}
 }
 
-void	exit_free(t_data *data, int exit_code)
+// SHOULD NOT EXIT AS MINISHELL IS A LOOP GIVING BACK PROMPT
+
+void	free_all(t_data *data)
 {
 	if (data->cmdline != NULL)
 		free(data->cmdline);
@@ -76,5 +78,24 @@ void	exit_free(t_data *data, int exit_code)
 		free_exec(data);
 	if (data->is_bq)
 		free(data->is_bq);
+}
+
+void	exit_free(t_data *data, int exit_code)
+{
+	/*if (data->cmdline != NULL)
+		free(data->cmdline);
+	if (data->token)
+		free_token(data->token);
+	if (data->exec)
+		free_exec(data);
+	if (data->is_bq)
+		free(data->is_bq);*/
+	free_all(data);
 	exit(exit_code);
+}
+
+void	set_exitloop_free(t_data *data)
+{
+	free_all(data);
+	data->sh_exit_loop = 1;
 }
