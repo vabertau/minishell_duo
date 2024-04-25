@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/24 18:45:29 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/04/25 13:39:02 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 	i = -1;
 	f =  cmd->split_cmd;//ft_split(cmd->str, ' ');
 	f[0] = ft_strjoin("/",f[0]);
+	if (access(f[0], F_OK) == 0)
+		execve(f[0], f, shell->env);
 	while (shell->env[++i] != NULL && shell->env)
 	{
 		ret = ft_substr(shell->env[i], 0, 5);
