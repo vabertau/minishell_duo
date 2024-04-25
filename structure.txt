@@ -129,15 +129,11 @@ protect from unauthorized operators ; etc
 
 CORRECTION GRID
 
-N execute pas les commandes avec un path absolu (ex: bin\ls)
-
-Parsing error quitte le programme enlever exit
-
-Commande vide : segfault MOI A GEERER
-Seulement espacces ou tabs : segfault
-
 Exit ne quitte pas le terminal
 
+pas de command not found
+
+echo $? apres les expand
 ---------------------------------
 
 
