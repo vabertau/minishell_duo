@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/25 15:34:51 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/04/27 17:11:03 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void handle_here_document(t_token *redir) {
     } else if (pid == 0) {
         close(pipe_fds[0]);
         char *line;
-        while ((line = readline("> ")) != NULL) {
+        while ((line = readline("heredoc> ")) != NULL) {
             if (strcmp(line, redir->word) == 0) {
                 free(line);
                 break;
