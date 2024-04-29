@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/27 17:11:03 by hedi             ###   ########.fr       */
+/*   Updated: 2024/04/29 16:30:01 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,54 +196,56 @@ int	init_pipes(t_data *shell, int *pipe_fds)
 	return (1);
 }
 
-int executor(t_data *shell)
-{
-	int pipe_fds[2 * (shell->nb_cmd - 1)];
-	int i = 0;
-	pid_t pid;
+int executor(t_data *shell) {
+    int pipe_fds[2 * (shell->nb_cmd - 1)];
+    int i = 0;
+    pid_t pid;
 
-	// Initialisation des pipes si nécessaire
-	if ((shell->nb_cmd - 1) > 0)
-	{
-		if (!init_pipes(shell, pipe_fds))
-			return (0);
-	}
+    // Initialisation des pipes si nécessaire
+    if (shell->nb_cmd > 1) {
+        if (!init_pipes(shell, pipe_fds))
+            return (0);
+    }
 
-	t_exec *current_cmd = shell->exec;
-	i = 0;
-	while (current_cmd != NULL) {
-			pid = fork();
-			if (pid == -1) {
-				perror("fork");
-				exit(EXIT_FAILURE);
-			} else if (pid == 0) { // Processus enfant
-				if (i != 0) { // Si ce n'est pas la première commande
-					dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO);
-				}
-				if (i < (shell->nb_cmd - 1) * 2) { // Si ce n'est pas la dernière commande
-					dup2(pipe_fds[i * 2 + 1], STDOUT_FILENO);
-				}
+    t_exec *current_cmd = shell->exec;
+    while (current_cmd != NULL) {
+        pid = fork();
+        if (pid == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        } else if (pid == 0) { // Processus enfant
+            // Connecter les entrées et sorties
+            if (i < shell->nb_cmd - 1) {
+                dup2(pipe_fds[i * 2 + 1], STDOUT_FILENO);
+            }
+            if (i > 0) {
+                dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO);
+            }
 
-				// Fermeture des descripteurs de fichier de pipe dans le processus enfant
-				for (int j = 0; j < 2 * (shell->nb_cmd); j++) {
-					close(pipe_fds[j]);
-				}
+            // Fermer tous les descripteurs de pipe
+            for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
+                close(pipe_fds[j]);
+            }
 
-				exec_cmd(shell, current_cmd);
-				exit(EXIT_FAILURE); // Si exec_cmd retourne
-			}
+            exec_cmd(shell, current_cmd);
+            exit(EXIT_FAILURE); // Si exec_cmd retourne, c'est une erreur
+        }
 
-			current_cmd = current_cmd->next;
-			i++;
-	}
-	// Fermeture des descripteurs de fichier de pipe dans le processus parent
-	for (i = 0; i < 2 * (shell->nb_cmd - 1); i++) {
-		close(pipe_fds[i]);
-	}
-	// Attente des processus enfants
-	while ((pid = wait(NULL)) > 0);
+        // Passer à la commande suivante
+        current_cmd = current_cmd->next;
+        i++;
+    }
 
-	return 1;
+    // Fermeture des descripteurs de pipe dans le processus parent
+    for (i = 0; i < 2 * (shell->nb_cmd - 1); i++) {
+        close(pipe_fds[i]);
+    }
+
+    // Attente des processus enfants
+    while ((pid = wait(NULL)) > 0);
+
+    return 1;
 }
+
 
 
