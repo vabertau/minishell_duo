@@ -119,6 +119,7 @@ int	executor(t_data *shell);
 
 // Prototype de la fonction de manipulation de chaînes et utilitaires
 char	*ft_strjoin_free1(char const *s1, char const *s2);
+char	*ft_strjoin_free2(char const *s1, char const *s2);
 int	ft_same_str(char *str1, char *str2, size_t n);
 
 // Prototype de la fonction de gestion des pipes

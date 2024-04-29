@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/29 17:35:10 by hedi             ###   ########.fr       */
+/*   Updated: 2024/04/29 21:09:45 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void handle_here_document(t_token *redir) {
         perror("fork");
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
+        //fprintf(stderr, "test");
         close(pipe_fds[0]);
         char *line;
         while ((line = readline("heredoc> ")) != NULL) {
@@ -59,6 +60,7 @@ void handle_here_document(t_token *redir) {
         close(pipe_fds[1]);
         exit(EXIT_SUCCESS);
     } else {
+        fprintf(stderr, "test");
         waitpid(0, NULL, 0);
         close(pipe_fds[1]);
         dup2(pipe_fds[0], STDIN_FILENO);
@@ -86,7 +88,8 @@ void handle_redirections(t_exec *cmd) {
             handle_output_redirection(redir);
         }
         else if (redir->type == LEFT2) {
-            handle_here_document(redir);
+            //handle_here_document(redir);
+            handle_input_redirection(redir);
         }
         else if (redir->type == RIGHT2) {
             handle_append_redirection(redir);
@@ -96,6 +99,53 @@ void handle_redirections(t_exec *cmd) {
         }
     }
 }
+
+// Nouvelle fonction pour préparer les heredocs
+void prepare_heredocs(t_data *shell) {
+    int counter = 0;
+    int fd;
+    char *line;
+    char *counter_str, *full_path;
+
+    t_exec *current_cmd = shell->exec;
+    while (current_cmd) {
+        t_token *redir = current_cmd->redir;
+        while (redir) {
+            if (redir->type == LEFT2) { // Type LEFT2 pour heredoc
+                counter_str = ft_itoa(counter++);
+                full_path = ft_strjoin_free2("/tmp/heredoc_", counter_str); // 1 indique de libérer counter_str
+
+                fd = open(full_path, O_RDWR | O_CREAT | O_TRUNC, 0600);
+                if (fd == -1) {
+                    perror("open");
+                    exit(EXIT_FAILURE);
+                }
+                while ((line = readline("heredoc> ")) != NULL) {
+                    if (strcmp(line, redir->word) == 0) {
+                        free(line);
+                        break;
+                    }
+                    write(fd, line, strlen(line));
+                    write(fd, "\n", 1);
+                    free(line);
+                }
+                close(fd);
+                // Mise à jour du mot à rediriger avec le nouveau nom de fichier
+                free(redir->word); // Libérer l'ancien mot si nécessaire
+                redir->word = strdup(full_path); // Stocker le nom du fichier temporaire
+                free(full_path); // Nettoyer la mémoire
+            }
+            redir = redir->next;
+        }
+        current_cmd = current_cmd->next;
+    }
+}
+
+// Modification dans executor
+
+     // Appel avant de commencer les forks
+
+// Modifie handle_input_redirection pour gérer les fichiers temporaires
 
 
 
@@ -163,6 +213,30 @@ char	*ft_strjoin_free1(char const *s1, char const *s2)
 	return (dest);
 }
 
+char	*ft_strjoin_free2(char const *s1, char const *s2)
+{
+	char	*dest;
+	size_t	len;
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	len = (ft_strlen(s1) + ft_strlen(s2));
+	dest = malloc(len + 1 * sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (s1 && s1[i] && dest)
+		dest[k++] = s1[i++];
+	while (s2 && s2[j] && dest)
+		dest[k++] = s2[j++];
+	dest[k] = '\0';
+	free((void *)s2);
+	return (dest);
+}
+
 int	ft_same_str(char *str1, char *str2, size_t n)
 {
 	int	i;
@@ -202,6 +276,7 @@ int executor(t_data *shell) {
     int i = 0;
     pid_t pid;
 
+    prepare_heredocs(shell);
     // Initialisation des pipes si nécessaire
     if (shell->nb_cmd > 1) {
         if (!init_pipes(shell, pipe_fds))
