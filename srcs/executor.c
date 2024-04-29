@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/29 16:30:01 by hedi             ###   ########.fr       */
+/*   Updated: 2024/04/29 17:35:10 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void handle_here_document(t_token *redir) {
         close(pipe_fds[1]);
         exit(EXIT_SUCCESS);
     } else {
+        waitpid(0, NULL, 0);
         close(pipe_fds[1]);
         dup2(pipe_fds[0], STDIN_FILENO);
         close(pipe_fds[0]);
@@ -223,8 +224,10 @@ int executor(t_data *shell) {
             }
 
             // Fermer tous les descripteurs de pipe
-            for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
+            int j = 0;
+            while (j < 2 * (shell->nb_cmd - 1)) {
                 close(pipe_fds[j]);
+                j++;
             }
 
             exec_cmd(shell, current_cmd);
@@ -237,8 +240,10 @@ int executor(t_data *shell) {
     }
 
     // Fermeture des descripteurs de pipe dans le processus parent
-    for (i = 0; i < 2 * (shell->nb_cmd - 1); i++) {
+    i = 0;
+    while (i < 2 * (shell->nb_cmd - 1)) {
         close(pipe_fds[i]);
+        i++;
     }
 
     // Attente des processus enfants
@@ -246,6 +251,3 @@ int executor(t_data *shell) {
 
     return 1;
 }
-
-
-
