@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pfill_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:47:39 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/24 16:04:46 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/01 01:08:45 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,18 @@ void	malloc_redir(t_data *data)
 				tmp_exec->redir = malloc(sizeof(t_token)); //CHECKED
 				if (!tmp_exec->redir)
 					exit_free(data, -1);
-				tmp_redir = tmp_exec->redir->next;
+				tmp_redir = tmp_exec->redir;
 			}
 			else
 			{
-				tmp_redir = malloc(sizeof(t_token)); // CHECKED
+				tmp_redir->next = malloc(sizeof(t_token)); // CHECKED
 				if (!tmp_redir)
 					exit_free(data, -1);
 				tmp_redir = tmp_redir->next;
 			}
 			j++;
 		}
-		tmp_redir = NULL;
+		tmp_redir->next = NULL;
 		tmp_exec = tmp_exec->next;
 		i++;
 	}
@@ -92,6 +92,7 @@ void	fill_redir(t_data *data)
 	t_exec	*tmp_exec;
 	t_token	*tmp_token;
 	t_token	*previous_token;
+	t_token *tmp_redir;
 	int		i;
 	int		j;
 
@@ -101,6 +102,7 @@ void	fill_redir(t_data *data)
 	malloc_redir(data);
 	tmp_exec = data->exec;
 	tmp_token = data->token;
+	tmp_redir = tmp_exec->redir;
 	previous_token = NULL;
 	while (i < data->nb_tokens)
 	{
@@ -108,8 +110,9 @@ void	fill_redir(t_data *data)
 		if (tmp_token->type == WORD && (previous_token != NULL) && (previous_token->type == RIGHT1 ||
 			previous_token->type == RIGHT2 || previous_token->type == LEFT1 || previous_token->type == LEFT2))
 		{
-			tmp_exec->redir->word = tmp_token->word;
-			tmp_exec->redir->type = previous_token->type;
+			tmp_redir->word = tmp_token->word;
+			tmp_redir->type = previous_token->type;
+			tmp_redir = tmp_redir->next;
 			j++;
 		}
 		if (j == tmp_exec->nb_redir)
@@ -117,6 +120,7 @@ void	fill_redir(t_data *data)
 			if (tmp_exec->next == NULL)
 				return ;
 			tmp_exec = tmp_exec->next;
+			tmp_redir = tmp_exec->redir;
 			j = 0;
 		}
 		i++;

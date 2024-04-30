@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/30 20:18:47 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/01 01:08:01 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	minishell_loop(t_data data)
 	if (data.sh_exit_loop)
 		return (-1);
 	parser(&data);
-	aff_val(&data);
-	// executor(&data);
+	//aff_val(&data);
+	 executor(&data);
 	return (0);
 }
 
