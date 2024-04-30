@@ -108,9 +108,9 @@ char	*ft_strjoin_free1(char const *s1, char const *s2);
 
 // Prototypes des fonctions de gestion de redirection
 void	handle_input_redirection(t_token *redir);
-void	handle_output_redirection(t_token *redir);
+void	handle_output_redirection(t_token *redir, int fd);
 void	handle_here_document(t_token *redir);
-void	handle_append_redirection(t_token *redir);
+void	handle_append_redirection(t_token *redir, int fd);
 void	handle_redirections(t_exec *cmd);
 
 // Prototypes des fonctions d'exécution de commandes
@@ -124,3 +124,6 @@ int	ft_same_str(char *str1, char *str2, size_t n);
 
 // Prototype de la fonction de gestion des pipes
 int	init_pipes(t_data *shell, int *pipe_fds);
+
+void prepare_out2(t_data *shell);
+void prepare_out1(t_data *shell);

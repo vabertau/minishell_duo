@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/29 21:09:45 by hedi             ###   ########.fr       */
+/*   Updated: 2024/04/30 16:18:30 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,28 @@ void handle_input_redirection(t_token *redir) {
     close(fd);
 }
 
-void handle_output_redirection(t_token *redir) {
-    int fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+void handle_output_redirection(t_token *redir, int fd) {
+    
     if (fd == -1) {
         perror("open");
         exit(EXIT_FAILURE);
     }
-    dup2(fd, STDOUT_FILENO);
+    if (redir->next == NULL || redir->next->type != RIGHT1) {
+        dup2(fd, STDOUT_FILENO);
+    }
+    close(fd);
+}
+
+
+
+void handle_append_redirection(t_token *redir, int fd) {
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+    if (redir->next == NULL || redir->next->type != RIGHT1) {
+        dup2(fd, STDOUT_FILENO);
+    }
     close(fd);
 }
 
@@ -69,36 +84,77 @@ void handle_here_document(t_token *redir) {
     }
 }
 
-void handle_append_redirection(t_token *redir) {
-    int fd = open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
-    dup2(fd, STDOUT_FILENO);
-    close(fd);
-}
+
 
 void handle_redirections(t_exec *cmd) {
+    int fd;
     for (t_token *redir = cmd->redir; redir != NULL; redir = redir->next) {
         if (redir->type == LEFT1) {
             handle_input_redirection(redir);
         }
         else if (redir->type == RIGHT1) {
-            handle_output_redirection(redir);
+            fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            handle_output_redirection(redir, fd);
+            
         }
         else if (redir->type == LEFT2) {
             //handle_here_document(redir);
             handle_input_redirection(redir);
         }
         else if (redir->type == RIGHT2) {
-            handle_append_redirection(redir);
+            fd = open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            handle_append_redirection(redir, fd);
         }
         else {
             // Pas d'action nécessaire pour les autres types
         }
     }
 }
+
+void prepare_out1(t_data *shell) {
+    if (shell == NULL || shell->exec == NULL) return;  // Ajouter cette vérification
+
+    int fd;
+    t_exec *current_cmd = shell->exec;
+    while (current_cmd) {
+        t_token *redir = current_cmd->redir;
+        while (redir) {
+            if (redir->type == RIGHT1) {
+                fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                if (fd == -1) {
+                    perror("open failed");
+                    continue;  // Continue même en cas d'erreur d'ouverture
+                }
+                close(fd);
+            }
+            redir = redir->next;
+        }
+        current_cmd = current_cmd->next;
+    }
+}
+
+void prepare_out2(t_data *shell) {
+    if (shell == NULL || shell->exec == NULL) return;  // Ajouter cette vérification
+
+    int fd;
+    t_exec *current_cmd = shell->exec;
+    while (current_cmd) {
+        t_token *redir = current_cmd->redir;
+        while (redir) {
+            if (redir->type == RIGHT2) {
+                fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                if (fd == -1) {
+                    perror("open failed");
+                    continue;  // Continue même en cas d'erreur d'ouverture
+                }
+                close(fd);
+            }
+            redir = redir->next;
+        }
+        current_cmd = current_cmd->next;
+    }
+}
+
 
 // Nouvelle fonction pour préparer les heredocs
 void prepare_heredocs(t_data *shell) {
@@ -277,6 +333,8 @@ int executor(t_data *shell) {
     pid_t pid;
 
     prepare_heredocs(shell);
+    prepare_out1(shell);
+    prepare_out2(shell);
     // Initialisation des pipes si nécessaire
     if (shell->nb_cmd > 1) {
         if (!init_pipes(shell, pipe_fds))

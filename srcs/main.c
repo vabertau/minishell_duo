@@ -6,11 +6,27 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/04/27 16:52:13 by hedi             ###   ########.fr       */
+/*   Updated: 2024/04/30 20:18:47 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+void	aff_val(t_data *data)
+{
+	t_exec *cur_cmd = data->exec;
+	while (cur_cmd)
+	{
+		t_token *cur_redir = cur_cmd->redir;
+		printf("%s\n\n\n", cur_cmd->full_cmd);
+		while (cur_redir)
+		{
+			printf("%s\n%u\n", cur_redir->word, cur_redir->type);
+			cur_redir= cur_redir->next;
+		}
+		cur_cmd = cur_cmd->next;
+	}
+}
+
 
 int	minishell_loop(t_data data)
 {
@@ -20,7 +36,8 @@ int	minishell_loop(t_data data)
 	if (data.sh_exit_loop)
 		return (-1);
 	parser(&data);
-	executor(&data);
+	aff_val(&data);
+	// executor(&data);
 	return (0);
 }
 
@@ -188,46 +205,46 @@ int	main(int argc, char **argv, char **envp)
 */
 
 // ======== TEST FILL_TYPES =========
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	t_data	data;
-	t_data	tmp;
-	t_type	test_type;
-	int		i;
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	i = 0;
-	//while (1)
-	//{
-		init_data(&data);
-		get_input(&data);
-		spaces_bet_tokens(&data);
-		nb_tokens(&data);
-		malloc_tokens(&data);
-		if (data.token == NULL)
-			printf("token = NULL");
-		fill_tokens(&data);
-		fill_types(&data);
-		printf("cmdline = %s\n\n", data.cmdline);
-		printf("nb tokens = %i\n\n", data.nb_tokens);
-		tmp = data;
-		test_type = WORD;
-		while (tmp.token != NULL)
-		{
-			printf("word = %s\n", tmp.token->word);
-			printf("type = %u\n", tmp.token->type);
-			printf("is_bq = %i\n\n", data.is_bq[i]);
-			tmp.token = tmp.token->next;
-			i++;
-		}
-	//	free_bf_newprompt(&data);
-	//}
-	exit_free(&data, 0); //tmp
-}
-*/
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_data	data;
+// 	t_data	tmp;
+// 	t_type	test_type;
+// 	int		i;
+
+// 	(void)argc;
+// 	(void)argv;
+// 	(void)envp;
+// 	i = 0;
+// 	//while (1)
+// 	//{
+// 		init_data(&data, envp);
+// 		get_input(&data);
+// 		spaces_bet_tokens(&data);
+// 		nb_tokens(&data);
+// 		malloc_tokens(&data);
+// 		if (data.token == NULL)
+// 			printf("token = NULL");
+// 		fill_tokens(&data);
+// 		fill_types(&data);
+// 		printf("cmdline = %s\n\n", data.cmdline);
+// 		printf("nb tokens = %i\n\n", data.nb_tokens);
+// 		tmp = data;
+// 		test_type = WORD;
+// 		while (tmp.token != NULL)
+// 		{
+// 			printf("word = %s\n", tmp.token->word);
+// 			printf("type = %u\n", tmp.token->type);
+// 			printf("is_bq = %i\n\n", data.is_bq[i]);
+// 			tmp.token = tmp.token->next;
+// 			i++;
+// 		}
+// 	//	free_bf_newprompt(&data);
+// 	//}
+// 	exit_free(&data, 0); //tmp
+// }
+
 // ======== TEST LEXER LLDB =============
 /*
 int	main(int argc, char **argv, char **envp)
