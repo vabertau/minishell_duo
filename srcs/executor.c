@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/04/30 16:18:30 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/01 01:15:31 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void handle_output_redirection(t_token *redir, int fd) {
         perror("open");
         exit(EXIT_FAILURE);
     }
-    if (redir->next == NULL || redir->next->type != RIGHT1) {
+    if (redir->next == NULL || redir->next->type != RIGHT1 || redir->next->type != RIGHT2) {
         dup2(fd, STDOUT_FILENO);
     }
     close(fd);
@@ -42,7 +42,7 @@ void handle_append_redirection(t_token *redir, int fd) {
         perror("open");
         exit(EXIT_FAILURE);
     }
-    if (redir->next == NULL || redir->next->type != RIGHT1) {
+    if (redir->next == NULL || redir->next->type != RIGHT1 || redir->next->type != RIGHT2) {
         dup2(fd, STDOUT_FILENO);
     }
     close(fd);
