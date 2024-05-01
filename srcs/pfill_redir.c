@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:47:39 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/01 01:08:45 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/01 12:26:34 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,11 @@ void	malloc_redir(t_data *data)
 			}
 			j++;
 		}
-		tmp_redir->next = NULL;
+		if (j > 0)
+		{
+			tmp_redir->next = NULL;
+		}
+		
 		tmp_exec = tmp_exec->next;
 		i++;
 	}

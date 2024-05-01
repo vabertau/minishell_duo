@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/01 01:15:31 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/01 01:16:17 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,41 +48,6 @@ void handle_append_redirection(t_token *redir, int fd) {
     close(fd);
 }
 
-void handle_here_document(t_token *redir) {
-    int pipe_fds[2];
-    if (pipe(pipe_fds) == -1) {
-        perror("pipe");
-        exit(EXIT_FAILURE);
-    }
-
-    pid_t pid = fork();
-    if (pid == -1) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    } else if (pid == 0) {
-        //fprintf(stderr, "test");
-        close(pipe_fds[0]);
-        char *line;
-        while ((line = readline("heredoc> ")) != NULL) {
-            if (strcmp(line, redir->word) == 0) {
-                free(line);
-                break;
-            }
-            write(pipe_fds[1], line, strlen(line));
-            write(pipe_fds[1], "\n", 1);
-            free(line);
-        }
-        close(pipe_fds[1]);
-        exit(EXIT_SUCCESS);
-    } else {
-        fprintf(stderr, "test");
-        waitpid(0, NULL, 0);
-        close(pipe_fds[1]);
-        dup2(pipe_fds[0], STDIN_FILENO);
-        close(pipe_fds[0]);
-        waitpid(pid, NULL, 0);
-    }
-}
 
 
 
