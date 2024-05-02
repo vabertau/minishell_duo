@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pfill_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:47:39 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/01 12:26:34 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/02 13:26:10 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void	fill_redir(t_data *data)
 	previous_token = NULL;
 	while (i < data->nb_tokens)
 	{
-		j = 0;
 		if (tmp_token->type == WORD && (previous_token != NULL) && (previous_token->type == RIGHT1 ||
 			previous_token->type == RIGHT2 || previous_token->type == LEFT1 || previous_token->type == LEFT2))
 		{
