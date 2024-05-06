@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/06 17:52:47 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/06 18:36:28 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,11 +203,13 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 						execve(ret, f, shell->env);
 
 			}
-			ft_printf("command not found: %s\n", ++f[0]);
-			if (!cmd->next)
-				shell->last_return_code = 127;
+
 		}
+		
 	}
+	ft_printf("command not found: %s\n", ++f[0]); // utiliser putstr_fd
+		if (!cmd->next)
+			shell->last_return_code = 127;
 	return 0;
 }
 
@@ -296,7 +298,7 @@ int	init_pipes(t_data *shell, int *pipe_fds)
 int executor(t_data *shell) {
     int pipe_fds[2 * (shell->nb_cmd - 1)];
     int i = 0, status = 0;
-    pid_t pid, last_pid = 0;
+    pid_t pid, last_pid;
 
     prepare_heredocs(shell);
     prepare_out1(shell);
@@ -323,12 +325,13 @@ int executor(t_data *shell) {
             for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
                 close(pipe_fds[j]);
             }
-
+			if (i == shell->nb_cmd - 1)
+				shell->last_pid = pid;
             exec_cmd(shell, current_cmd);
             exit(EXIT_FAILURE); // Si exec_cmd retourne, c'est une erreur
         } else {
             if (i == shell->nb_cmd - 1) { // Dernier processus créé
-                last_pid = pid;
+                shell->last_pid = pid;
             }
         }
 
@@ -341,14 +344,14 @@ int executor(t_data *shell) {
     }
 
     // Attente spécifique du dernier processus
-    if (last_pid) {
-        waitpid(last_pid, &status, 0);  // Attendre spécifiquement le dernier processus
-        if (WIFEXITED(status)) {
-            shell->last_return_code = WEXITSTATUS(status);
-        }
-    }
-	else if (last_pid == -1)
-		 shell->last_return_code = 127;
+    // if (shell->last_pid) {
+    //     waitpid(shell->last_pid, &status, 0);  // Attendre spécifiquement le dernier processus
+    //     if (WIFEXITED(status)) {
+    //         shell->last_return_code = WEXITSTATUS(status);
+    //     }
+    // }
+	// else if (shell->last_pid == -1)
+	// 	 shell->last_return_code = 127;
     // Attente des autres processus enfants
     while ((pid = wait(NULL)) > 0);
 
