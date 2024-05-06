@@ -50,7 +50,7 @@ typedef struct s_data{
 	t_type type;
 	t_exec	*exec;
 	char	**env;
-	bool	*is_bq;
+	int	*is_bq;
 	bool	sh_exit_loop;
 }				t_data;
 
@@ -95,6 +95,10 @@ void	fill_split_cmd(t_data *data);
 void	nb_redir(t_data *data);
 void	fill_redir(t_data *data);
 void	init_exec(t_data *data);
+
+// ===== EXPANDS =====
+
+int expands(t_data *data);
 
 // ====== EXIT ======
 

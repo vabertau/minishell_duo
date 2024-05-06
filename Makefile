@@ -8,7 +8,7 @@ FILENAMES = main.c get_input.c lexer.c nb_tokens.c spaces_bet_tokens.c \
 exit_free.c skip_q.c malloc_tokens.c init_data.c fill_tokens.c ft_quotesplit.c \
 copy_bet_q.c fill_types.c check_unclosedq.c parsing_error.c checks.c check_schar_error.c \
 check_pipe_ext.c pnb_cmd.c parser.c pmalloc_exec.c pfill_full_cmd.c pfill_split_cmd.c pfill_redir.c \
-pinit_exec.c executor.c
+pinit_exec.c executor.c expands.c
 
 SRCS = $(addprefix srcs/, $(FILENAMES))
 
