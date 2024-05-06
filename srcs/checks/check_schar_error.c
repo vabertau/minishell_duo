@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:06:04 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:09 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:39:10 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,17 @@ static int	check_for_append_space_append(t_data *data)
 	return (0);
 }
 
+int	check_forbidden(char c)
+{
+	if (c == '\\' || c == ';' || c == '\0' ||
+		c == '&' || c == '*' || c == '(' || c == ')')
+		return (1);
+	return (0);
+}
+
+/*
+Checks for parsing errors in cmdline, skipping charachters between quotes
+*/
 void	check_schar_error(t_data *data)
 {
 	int	i;
@@ -114,6 +125,10 @@ void	check_schar_error(t_data *data)
 
 	i = 0;
 	cmdline = data->cmdline;
+	if (check_for_append_space_append(data) == 1)
+			return ((void)parsing_error(data));
+	if (check_for_append_pipe(data) == 1)
+			return ((void)parsing_error(data));
 	while (cmdline[i])
 	{
 		if (cmdline[i] == '\'')
@@ -128,9 +143,7 @@ void	check_schar_error(t_data *data)
 			|| (cmdline[i] == '>' && cmdline[i + 1] == '<')
 			|| (cmdline[i] == '<' && cmdline[i + 1] == '>'))
 				return ((void)parsing_error(data));
-		if (check_for_append_space_append(data) == 1)
-			return ((void)parsing_error(data));
-		if (check_for_append_pipe(data) == 1)
+		if (check_forbidden(cmdline[i]) == 1)
 			return ((void)parsing_error(data));
 		i++;
 	}
