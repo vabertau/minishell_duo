@@ -51,6 +51,7 @@ typedef struct s_data{
 	t_exec	*exec;
 	char	**env;
 	int	*is_bq;
+	int		last_return_code;
 	bool	sh_exit_loop;
 }				t_data;
 

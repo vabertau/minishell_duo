@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:22 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:31:23 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,13 +293,12 @@ int	init_pipes(t_data *shell, int *pipe_fds)
 
 int executor(t_data *shell) {
     int pipe_fds[2 * (shell->nb_cmd - 1)];
-    int i = 0;
-    pid_t pid;
+    int i = 0, status = 0;
+    pid_t pid, last_pid = 0;
 
     prepare_heredocs(shell);
     prepare_out1(shell);
     prepare_out2(shell);
-    // Initialisation des pipes si nécessaire
     if (shell->nb_cmd > 1) {
         if (!init_pipes(shell, pipe_fds))
             return (0);
@@ -312,7 +311,6 @@ int executor(t_data *shell) {
             perror("fork");
             exit(EXIT_FAILURE);
         } else if (pid == 0) { // Processus enfant
-            // Connecter les entrées et sorties
             if (i < shell->nb_cmd - 1) {
                 dup2(pipe_fds[i * 2 + 1], STDOUT_FILENO);
             }
@@ -320,31 +318,37 @@ int executor(t_data *shell) {
                 dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO);
             }
 
-            // Fermer tous les descripteurs de pipe
-            int j = 0;
-            while (j < 2 * (shell->nb_cmd - 1)) {
+            for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
                 close(pipe_fds[j]);
-                j++;
             }
 
             exec_cmd(shell, current_cmd);
             exit(EXIT_FAILURE); // Si exec_cmd retourne, c'est une erreur
+        } else {
+            if (i == shell->nb_cmd - 1) { // Dernier processus créé
+                last_pid = pid;
+            }
         }
 
-        // Passer à la commande suivante
         current_cmd = current_cmd->next;
         i++;
     }
 
-    // Fermeture des descripteurs de pipe dans le processus parent
-    i = 0;
-    while (i < 2 * (shell->nb_cmd - 1)) {
+    for (i = 0; i < 2 * (shell->nb_cmd - 1); i++) {
         close(pipe_fds[i]);
-        i++;
     }
 
-    // Attente des processus enfants
+    // Attente spécifique du dernier processus
+    if (last_pid) {
+        waitpid(last_pid, &status, 0);  // Attendre spécifiquement le dernier processus
+        if (WIFEXITED(status)) {
+            shell->last_return_code = WEXITSTATUS(status);
+        }
+    }
+
+    // Attente des autres processus enfants
     while ((pid = wait(NULL)) > 0);
 
-    return 1;
+    return shell->last_return_code; // Retourner le code de sortie du dernier processus
 }
+
