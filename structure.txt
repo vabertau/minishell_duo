@@ -9,7 +9,7 @@ check_empty checks for empty cmdline, calls parsing_error if empty.
 check_unclosedq Checks for unclosed quotes in the beginning and returns parsing error if there are any.
 Better to check in the beginning, allows not to handle unclosed quotes in tokens
 
-
+echo $hey $SHELL -> espace en trop
 
 
 
