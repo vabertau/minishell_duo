@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/01 15:32:10 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:30:52 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ bool    is_to_expand(char *word)
     int i;
 
     i = 0;
-    if (word[i] == '$' && word[i + 1] && (ft_isalnum(word[i + 1]) || word[i + 1] == '_' || word[i + 1] == '?')) 
+    if (word[i] == '$' && word[i + 1] && (ft_isalnum(word[i + 1]) || word[i + 1] == '_' || word[i + 1] == '?'))
         return (1);
-    return (0);        
+    return (0);
 }
 
 int     varlen(char *word)
 {
     int ret;
     int i;
-    
+
     ret = 0;
     i = 1;
     while (word[i] && (ft_isalnum(word[i]) || word[i] == '_' || word[i] == '?'))
@@ -134,6 +134,7 @@ int expands(t_data *data)
             launch_expand(data, tmp);
         i++;
         tmp = tmp->next;
-        
+
     }
+	return (0);
 }
