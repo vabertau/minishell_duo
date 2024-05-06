@@ -71,6 +71,10 @@ void	check_schar_error(t_data *data);
 void	check_pipe_ext(t_data *data);
 void	check_empty(t_data *data);
 
+// ===== CHECKER AFTER REDIR =====
+
+void	check_redirfile(t_data *data);
+
 // ====== LEXER ======
 
 void	lexer(t_data *data);
