@@ -138,3 +138,8 @@ int	init_pipes(t_data *shell, int *pipe_fds);
 
 void prepare_out2(t_data *shell);
 void prepare_out1(t_data *shell);
+
+int safe_open(const char *pathname, int flags, mode_t mode, t_data *shell);
+
+void safe_close(int fd, t_data *shell);
+void safe_dup2(int oldfd, int newfd, t_data *shell);
