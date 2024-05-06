@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/06 18:36:28 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/06 18:41:46 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 	int		i;
 	int		j;
 	int		k;
-	char	*ret;
+	char	*ret, *ret2,*ret3;
 	char	**f;
 
 	handle_redirections(cmd);
@@ -207,7 +207,11 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 		}
 		
 	}
-	ft_printf("command not found: %s\n", ++f[0]); // utiliser putstr_fd
+
+	ret2 = ft_strjoin("command not found: ", ++f[0]);
+	ret3 = ft_strjoin(ret2, "\n");
+	ft_putstr_fd(ret3, 2);
+	 // utiliser putstr_fd
 		if (!cmd->next)
 			shell->last_return_code = 127;
 	return 0;
