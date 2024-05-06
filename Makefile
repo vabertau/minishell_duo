@@ -4,11 +4,11 @@ CC = cc $(FLAGS) -g
 
 #FLAGS = -Wall -Werror -Wextra
 
-FILENAMES = main.c get_input.c lexer.c nb_tokens.c spaces_bet_tokens.c \
-exit_free.c skip_q.c malloc_tokens.c init_data.c fill_tokens.c ft_quotesplit.c \
-copy_bet_q.c fill_types.c check_unclosedq.c parsing_error.c checks.c check_schar_error.c \
-check_pipe_ext.c pnb_cmd.c parser.c pmalloc_exec.c pfill_full_cmd.c pfill_split_cmd.c pfill_redir.c \
-pinit_exec.c executor.c expands.c
+FILENAMES = main.c parsing/get_input.c parsing/lexer.c parsing/nb_tokens.c parsing/spaces_bet_tokens.c \
+free/exit_free.c parsing/skip_q.c parsing/malloc_tokens.c parsing/init_data.c parsing/fill_tokens.c parsing/ft_quotesplit.c \
+parsing/copy_bet_q.c parsing/fill_types.c checks/check_unclosedq.c parsing/parsing_error.c checks/checks.c checks/check_schar_error.c \
+checks/check_pipe_ext.c parsing/pnb_cmd.c parsing/parser.c parsing/pmalloc_exec.c parsing/pfill_full_cmd.c parsing/pfill_split_cmd.c parsing/pfill_redir.c \
+parsing/pinit_exec.c executor/executor.c expands/expands.c
 
 SRCS = $(addprefix srcs/, $(FILENAMES))
 
