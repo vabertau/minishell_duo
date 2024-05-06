@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/06 18:41:46 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 00:14:34 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void handle_input_redirection(t_token *redir) {
+void handle_input_redirection(t_token *redir, t_data *shell) {
     int fd = open(redir->word, O_RDONLY);
     if (fd == -1) {
         perror("open");
@@ -22,7 +22,7 @@ void handle_input_redirection(t_token *redir) {
     close(fd);
 }
 
-void handle_output_redirection(t_token *redir, int fd) {
+void handle_output_redirection(t_token *redir, int fd, t_data *shell) {
 
     if (fd == -1) {
         perror("open");
@@ -36,7 +36,7 @@ void handle_output_redirection(t_token *redir, int fd) {
 
 
 
-void handle_append_redirection(t_token *redir, int fd) {
+void handle_append_redirection(t_token *redir, int fd, t_data *shell) {
     if (fd == -1) {
         perror("open");
         exit(EXIT_FAILURE);
@@ -50,28 +50,24 @@ void handle_append_redirection(t_token *redir, int fd) {
 
 
 
-void handle_redirections(t_exec *cmd) {
+void handle_redirections(t_exec *cmd, t_data *shell) {
     int fd;
-    for (t_token *redir = cmd->redir; redir != NULL; redir = redir->next) {
-        if (redir->type == LEFT1) {
-            handle_input_redirection(redir);
+    t_token *redir;
+
+    redir = cmd->redir;
+    while (redir != NULL) {
+        if (redir->type == LEFT1 || redir->type == LEFT2) {
+            handle_input_redirection(redir,shell);
         }
-        else if (redir->type == RIGHT1) {
-            fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            handle_output_redirection(redir, fd);
+        else if (redir->type == RIGHT1 || redir->type == RIGHT2) {
+            if (redir->type == RIGHT2)
+                fd = open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            else
+                fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            handle_output_redirection(redir, fd, shell);
 
         }
-        else if (redir->type == LEFT2) {
-            //handle_here_document(redir);
-            handle_input_redirection(redir);
-        }
-        else if (redir->type == RIGHT2) {
-            fd = open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
-            handle_append_redirection(redir, fd);
-        }
-        else {
-            // Pas d'action nécessaire pour les autres types
-        }
+         redir = redir->next;
     }
 }
 
@@ -152,7 +148,7 @@ void prepare_heredocs(t_data *shell) {
                 close(fd);
                 // Mise à jour du mot à rediriger avec le nouveau nom de fichier
                 free(redir->word); // Libérer l'ancien mot si nécessaire
-                redir->word = strdup(full_path); // Stocker le nom du fichier temporaire
+                redir->word = ft_strdup(full_path); // Stocker le nom du fichier temporaire
                 free(full_path); // Nettoyer la mémoire
             }
             redir = redir->next;
@@ -178,7 +174,7 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 	char	*ret, *ret2,*ret3;
 	char	**f;
 
-	handle_redirections(cmd);
+	handle_redirections(cmd, shell);
 	j = 0;
 	i = -1;
 	f =  cmd->split_cmd;//ft_split(cmd->str, ' ');
@@ -201,20 +197,16 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 				if (shell->env[i][j] == ':')
 					if (access(ret, F_OK) == 0)
 						execve(ret, f, shell->env);
-
 			}
-
-		}
-		
+		}	
 	}
-
 	ret2 = ft_strjoin("command not found: ", ++f[0]);
 	ret3 = ft_strjoin(ret2, "\n");
 	ft_putstr_fd(ret3, 2);
-	 // utiliser putstr_fd
-		if (!cmd->next)
-			shell->last_return_code = 127;
-	return 0;
+    free(ret2);
+    free(ret3);
+	exit(127);
+	return 127;
 }
 
 char	*ft_strjoin_free1(char const *s1, char const *s2)
@@ -301,64 +293,46 @@ int	init_pipes(t_data *shell, int *pipe_fds)
 
 int executor(t_data *shell) {
     int pipe_fds[2 * (shell->nb_cmd - 1)];
-    int i = 0, status = 0;
-    pid_t pid, last_pid;
+    int i = 0;
+    int status;
+    pid_t pid;
+    int j;
 
     prepare_heredocs(shell);
-    prepare_out1(shell);
-    prepare_out2(shell);
     if (shell->nb_cmd > 1) {
         if (!init_pipes(shell, pipe_fds))
             return (0);
     }
-
     t_exec *current_cmd = shell->exec;
     while (current_cmd != NULL) {
         pid = fork();
         if (pid == -1) {
             perror("fork");
             exit(EXIT_FAILURE);
-        } else if (pid == 0) { // Processus enfant
+        } else if (pid == 0) { 
             if (i < shell->nb_cmd - 1) {
                 dup2(pipe_fds[i * 2 + 1], STDOUT_FILENO);
             }
             if (i > 0) {
                 dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO);
             }
-
-            for (int j = 0; j < 2 * (shell->nb_cmd - 1); j++) {
+            j = 0;
+            while (j < 2 * (shell->nb_cmd - 1)) {
                 close(pipe_fds[j]);
             }
-			if (i == shell->nb_cmd - 1)
-				shell->last_pid = pid;
             exec_cmd(shell, current_cmd);
-            exit(EXIT_FAILURE); // Si exec_cmd retourne, c'est une erreur
-        } else {
-            if (i == shell->nb_cmd - 1) { // Dernier processus créé
-                shell->last_pid = pid;
-            }
+            exit_free(shell, EXIT_FAILURE);
+            j++;
         }
-
         current_cmd = current_cmd->next;
         i++;
     }
-
-    for (i = 0; i < 2 * (shell->nb_cmd - 1); i++) {
-        close(pipe_fds[i]);
-    }
-
-    // Attente spécifique du dernier processus
-    // if (shell->last_pid) {
-    //     waitpid(shell->last_pid, &status, 0);  // Attendre spécifiquement le dernier processus
-    //     if (WIFEXITED(status)) {
-    //         shell->last_return_code = WEXITSTATUS(status);
-    //     }
-    // }
-	// else if (shell->last_pid == -1)
-	// 	 shell->last_return_code = 127;
-    // Attente des autres processus enfants
-    while ((pid = wait(NULL)) > 0);
-
-    return shell->last_return_code; // Retourner le code de sortie du dernier processus
+    i = 0;
+    while (i < 2 * (shell->nb_cmd - 1)) 
+        close(pipe_fds[i++]);
+    waitpid(pid, &status, 0);
+    shell->last_return_code = WEXITSTATUS(status);
+    waitpid(-1, &status, 0);
+    return shell->last_return_code;
 }
 

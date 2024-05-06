@@ -118,11 +118,11 @@ void	set_exitloop_free(t_data *data);
 char	*ft_strjoin_free1(char const *s1, char const *s2);
 
 // Prototypes des fonctions de gestion de redirection
-void	handle_input_redirection(t_token *redir);
-void	handle_output_redirection(t_token *redir, int fd);
-void	handle_here_document(t_token *redir);
-void	handle_append_redirection(t_token *redir, int fd);
-void	handle_redirections(t_exec *cmd);
+void	handle_input_redirection(t_token *redir, t_data *shell);
+void	handle_output_redirection(t_token *redir, int fd, t_data *shell);
+void	handle_here_document(t_token *redir, t_data *shell);
+void	handle_append_redirection(t_token *redir, int fd, t_data *shell);
+void	handle_redirections(t_exec *cmd, t_data *shell);
 
 // Prototypes des fonctions d'exécution de commandes
 int	exec_cmd(t_data *shell, t_exec *cmd);

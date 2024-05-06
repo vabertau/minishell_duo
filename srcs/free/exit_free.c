@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:02:38 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:32 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:48:04 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,6 @@ void	free_all(t_data *data)
 
 void	exit_free(t_data *data, int exit_code)
 {
-	/*if (data->cmdline != NULL)
-		free(data->cmdline);
-	if (data->token)
-		free_token(data->token);
-	if (data->exec)
-		free_exec(data);
-	if (data->is_bq)
-		free(data->is_bq);*/
 	free_all(data);
 	exit(exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 17:38:09 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/06 22:44:15 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void	aff_val(t_data *data)
 }
 
 
-int	minishell_loop(t_data data)
+int	minishell_loop(t_data *data)
 {
-	data.sh_exit_loop = 0;
-	get_input(&data);
-	lexer(&data);
-	if (data.sh_exit_loop)
+	data->sh_exit_loop = 0;
+	get_input(data);
+	lexer(data);
+	if (data->sh_exit_loop)
 		return (-1);
-	expands(&data);
-	parser(&data);
-	if (data.sh_exit_loop)
+	expands(data);
+	parser(data);
+	if (data->sh_exit_loop)
 		return (-1);
 	//aff_val(&data);
-	 executor(&data);
+	data->last_return_code = executor(data);
 	return (0);
 }
 
@@ -50,11 +50,11 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-
+	data.last_return_code = 0;
 	while (1)
 	{
 		init_data(&data, envp);
-		minishell_loop(data);
+		minishell_loop(&data);
 		//printf("\n%d\n", data.last_return_code);
 	}
 	exit_free(&data, 0); //tmp
