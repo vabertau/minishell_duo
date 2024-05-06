@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:27 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:47:32 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,11 @@ void    replace_var(t_data *data, char **word, int i, int len_var)
     var_name = ft_substr(*word, i + 1, len_var);
     if (!var_name)
         exit_free(data, -1); // TO CHECK
-    // if ((len == 1) && (*word)[i + 1] == '?') // INSERT HERE AFTER SIGNALS RETURN OF LAST CMD
-    else
+    if ((len_var == 1) && (*word)[i + 1] == '?') // INSERT HERE AFTER SIGNALS RETURN OF LAST CMD
+		var_content = ft_strdup(ft_itoa(data->last_return_code));
+	else
         var_content = fetch_var_content(var_name, data->env);
-    // ADD CONDITION
+    // ADD CONDITION FOR var_content == NULL MALLOC ERROR
     ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content) + 1)); //-1 for $?
     // ADD PROTECTION
     ft_strlcpy(ret, *word, i + 1);
