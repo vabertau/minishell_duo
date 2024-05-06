@@ -54,6 +54,7 @@ typedef struct s_data{
 	int		last_pid;
 	int		last_return_code;
 	bool	sh_exit_loop;
+	bool	void_expand;
 }				t_data;
 
 // ====== READLINE ======

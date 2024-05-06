@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 17:47:32 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:23:32 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int     varlen(char *word)
     return (ret);
 }
 
-char    *fetch_var_content(char *var, char **env)
+char    *fetch_var_content(t_data *data, char *var, char **env)
 {
     char    *ret;
     int     i;
@@ -62,7 +62,9 @@ char    *fetch_var_content(char *var, char **env)
         }
         i++;
     }
-    return (NULL);
+	ret = ft_strdup(""); //to protect
+	data->void_expand = 1;
+    return (ret);
 }
 
 void    replace_var(t_data *data, char **word, int i, int len_var)
@@ -72,18 +74,19 @@ void    replace_var(t_data *data, char **word, int i, int len_var)
     char    *ret;
 
     var_name = ft_substr(*word, i + 1, len_var);
+	data->void_expand = 0;
     if (!var_name)
         exit_free(data, -1); // TO CHECK
     if ((len_var == 1) && (*word)[i + 1] == '?') // INSERT HERE AFTER SIGNALS RETURN OF LAST CMD
 		var_content = ft_strdup(ft_itoa(data->last_return_code));
-	else
-        var_content = fetch_var_content(var_name, data->env);
-    // ADD CONDITION FOR var_content == NULL MALLOC ERROR
+    else
+        var_content = fetch_var_content(data, var_name, data->env);
+    // ADD CONDITION
     ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content) + 1)); //-1 for $?
     // ADD PROTECTION
-    ft_strlcpy(ret, *word, i + 1);
+	ft_strlcpy(ret, *word, i + 1);
     ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1);
-    ft_strlcat(ret, &(*word[i + len_var + 1]), ft_strlen(*word) + ft_strlen(var_content) + 1);
+	//ft_strlcat(ret, &(*word[i + len_var + 1]), ft_strlen(*word) + ft_strlen(var_content) + 1); //error to suppress
     free(*word);
     *word = ret;
     return ((void)(free(var_name)), (void)(free(var_content)));
@@ -135,7 +138,6 @@ int expands(t_data *data)
             launch_expand(data, tmp);
         i++;
         tmp = tmp->next;
-
     }
 	return (0);
 }
