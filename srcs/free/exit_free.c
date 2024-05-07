@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:02:38 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 17:16:07 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 18:52:28 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ void	exit_free(t_data *data, int exit_code)
 
 void	set_exitloop_free(t_data *data)
 {
-	free_all(data);
+	//free_all(data);
 	data->sh_exit_loop = 1;
 }

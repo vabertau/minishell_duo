@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 17:54:18 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:33:48 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init_data(&data, envp);
 		minishell_loop(&data);
-		if (!data.sh_exit_loop)
+		//if (!data.sh_exit_loop)
 			free_all(&data);
 		//printf("\n%d\n", data.last_return_code);
 	}
@@ -105,7 +105,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	//while (1)
 	//{
-		get_input(&data);
+		//get_input(&data);
+		data.cmdline = ft_strdup(">>>>>");
 		spaces_bet_tokens(&data);
 		printf("cmdline = %s\n", data.cmdline);
 	//}
@@ -305,7 +306,7 @@ int	main(int argc, char **argv, char **envp)
 	i = 0;
 	//while (1)
 	//{
-		init_data(&data);
+		init_data(&data, envp);
 		get_input(&data);
 		lexer(&data);
 		printf("cmdline = %s\n\n", data.cmdline);
@@ -861,4 +862,25 @@ int	main(int argc, char **argv, char **envp)
 	exit_free(&data, 0); //tmp
 }
 
+*/
+
+/*
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+	int		i;
+
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	i = 0;
+	//while (1)
+	//{
+		init_data(&data, envp);
+		//get_input(&data);
+		data.cmdline = ft_strdup(">>>>>>>");
+		lexer(&data);
+		expands(&data);
+		parser(&data);
+}
 */
