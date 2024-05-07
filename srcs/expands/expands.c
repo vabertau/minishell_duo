@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 15:39:26 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:17:13 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	varlen(char *word)
 
 	ret = 0;
 	i = 1;
+	if (word[1] == '?')
+		return (1);
 	while (word[i] && (ft_isalnum(word[i]) || word[i] == '_' || word[i] == '?'))
 	{
 		ret++;
@@ -90,9 +92,9 @@ void	replace_var(t_data *data, char **word, int i, int len_var)
 																					// ADD PROTECTION
 	ft_strlcpy(ret, *word, i + 1);
 	ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1);
-	// printf("ret = %s\n", ret);
-	// printf("word[i + len_var + 1] = %s\n", &((*word)[i + len_var + 1]));
-	// printf("catlen = %i\n",  ft_strlen(*word) + ft_strlen(var_content)- len_var);
+	//printf("ret = %s\n", ret);
+	//printf("word[i + len_var + 1] = %s\n", &((*word)[i + len_var + 1]));
+	//printf("catlen = %i\n",  ft_strlen(*word) + ft_strlen(var_content)- len_var);
 	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret)
 		+ ft_strlen(&((*word)[i + len_var + 1])) + 1); // error to suppress
 	// printf("ret2 = %s\n", ret);
@@ -121,7 +123,7 @@ void	launch_expand(t_data *data, t_token *token)
 		if (is_to_expand(&(word[i])))
 		{
 			len_var = varlen(&(word[i]));
-			// printf("lenvar = %i\n", len_var);
+			//printf("lenvar = %i\n", len_var);
 			replace_var(data, &word, i, len_var);
 			i += len_var; // ADD COND
 		}

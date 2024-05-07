@@ -1,7 +1,18 @@
 {
-    _readline_
-        Memcheck:Leak
-        match-leak-kinds: all
-        ...
-        fun:readline
+	ignore_readline_leaks
+	Memcheck:Leak
+	...
+	fun:readline
+}
+{
+	ignore_rl_history_leaks
+	Memcheck:Leak
+	...
+	fun:add_history
+}
+{
+	ignore_rl_history_leaks
+	Memcheck:Leak
+	...
+	obj:*/bin/*
 }
