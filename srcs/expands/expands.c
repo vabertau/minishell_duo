@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 17:17:13 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:00:35 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	replace_var(t_data *data, char **word, int i, int len_var)
 		exit_free(data, -1);                     // TO CHECK
 	if ((len_var == 1) && (*word)[i + 1] == '?')
 		// INSERT HERE AFTER SIGNALS RETURN OF LAST CMD
-		var_content = ft_strdup(ft_itoa(data->last_return_code));
+		var_content = ft_itoa(data->last_return_code); //PROTECT ITOA
 	else
 		var_content = fetch_var_content(data, var_name, data->env);
 	// ADD CONDITION
