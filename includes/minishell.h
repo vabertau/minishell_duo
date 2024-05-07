@@ -36,6 +36,7 @@ typedef struct s_token{
 	int					i;
 	char				*word;
 	t_type				type;
+	int					fd;
 	struct s_token		*next;
 }				t_token;
 

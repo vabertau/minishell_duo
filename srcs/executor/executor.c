@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 16:40:43 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:52:09 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void safe_dup2(int oldfd, int newfd, t_data *shell) {
 
 
 void handle_input_redirection(t_token *redir, t_data *shell) {
-    int fd;
-    fd = safe_open(redir->word, O_RDONLY, 0, shell);
-    if (fd == -1) {
+    
+    redir->fd = safe_open(redir->word, O_RDONLY, 0, shell);
+    if (redir->fd == -1) {
         perror("open");
         exit_free(shell,EXIT_FAILURE);
     }
-    safe_dup2(fd, STDIN_FILENO, shell);
-    safe_close(fd, shell);
+    safe_dup2(redir->fd, STDIN_FILENO, shell);
+    safe_close(redir->fd, shell);
 }
 
 void handle_output_redirection(t_token *redir, int fd, t_data *shell) {
@@ -78,7 +78,6 @@ void handle_append_redirection(t_token *redir, int fd, t_data *shell) {
 
 
 void handle_redirections(t_exec *cmd, t_data *shell) {
-    int fd;
     t_token *redir;
 
     redir = cmd->redir;
@@ -88,10 +87,10 @@ void handle_redirections(t_exec *cmd, t_data *shell) {
         }
         else if (redir->type == RIGHT1 || redir->type == RIGHT2) {
             if (redir->type == RIGHT2)
-                fd = safe_open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644, shell);
+                redir->fd = safe_open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644, shell);
             else
-                fd = safe_open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644, shell);
-            handle_output_redirection(redir, fd, shell);
+                redir->fd = safe_open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644, shell);
+            handle_output_redirection(redir, redir->fd, shell);
 
         }
          redir = redir->next;
