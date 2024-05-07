@@ -165,5 +165,6 @@ void	handle_sigint_command(int sig);
 void	handle_sigquit_command(int sig);
 void	handle_sigquit(int sig);
 void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int));
+void	exec_build(t_data *shell, char **f);
 
 #endif

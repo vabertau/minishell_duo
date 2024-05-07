@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:02:38 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 16:56:11 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:16:07 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static void	free_token(t_token *token)
 		token = token->next;
 		if (tmp->word != NULL)
 			free(tmp->word);
-		if (tmp->fd != -1)
-			if (close(tmp->fd) == -1)
-				perror("close");
+		// if (tmp->fd != -1)
+		// 	if (close(tmp->fd) == -1)
+		// 		perror("close");
 		free(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 16:52:09 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:18:10 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,15 @@ void prepare_heredocs(t_data *shell) {
     }
 }
 
+void	exec_build(t_data *shell, char **f)
+{
+	char *test = ft_strdup(f[0]);
+	if (!ft_same_str(test, "echo", ft_strlen(test)))
+			return ;		
+	ft_echo(f);
+	exit_free(shell, 0);
+
+}
 
 int exec_cmd(t_data *shell, t_exec *cmd)
 {
@@ -147,7 +156,12 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 	j = 0;
 	i = -1;
 	f =  cmd->split_cmd;
+	exec_build(shell,  f);
+	
 	f[0] = ft_strjoin("/",f[0]);
+	
+	
+
 	if (access(f[0], F_OK) == 0)
 		execve(f[0], f, shell->env);
 	while (shell->env[++i] != NULL && shell->env)
