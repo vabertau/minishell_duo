@@ -1,3 +1,6 @@
+#ifndef MINISHELL_H
+#define MINISHELL_H
+
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -16,7 +19,7 @@
 # include <sys/stat.h>
 # include "../libftprintf/ft_printf.h"
 
-volatile sig_atomic_t signal_count = 0;
+extern volatile sig_atomic_t signal_count;
 
 
 typedef enum s_type{
@@ -157,3 +160,5 @@ void	handle_sigint_command(int sig);
 void	handle_sigquit_command(int sig);
 void	handle_sigquit(int sig);
 void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int));
+
+#endif

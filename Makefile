@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc $(FLAGS) -g
 
-FLAGS = -Wall -Werror -Wextra
+#FLAGS = -Wall -Werror -Wextra
 
 FILENAMES = main.c parsing/get_input.c parsing/lexer.c parsing/nb_tokens.c parsing/spaces_bet_tokens.c \
 free/exit_free.c parsing/skip_q.c parsing/malloc_tokens.c parsing/init_data.c parsing/fill_tokens.c parsing/ft_quotesplit.c \
