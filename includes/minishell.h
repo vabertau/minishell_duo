@@ -36,6 +36,7 @@ typedef struct s_exec{
 	char			*full_cmd;
 	char			**split_cmd;
 	int				nb_redir;
+	pid_t			pid;
 	t_token			*redir;
 	struct s_exec	*next;
 }				t_exec;

@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 12:20:46 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:33:09 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,6 +337,8 @@ int executor(t_data *shell) {
             exit_free(shell, EXIT_FAILURE);
             
         }
+        else
+            current_cmd->pid = pid;
         current_cmd = current_cmd->next;
         i++;
     }
