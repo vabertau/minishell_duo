@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 14:25:01 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:40:43 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,10 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 				ret = ft_strjoin_free1(ft_substr(shell->env[i], k, ((j) - k)), f[0]);
 				if (shell->env[i][j] == ':')
 					if (access(ret, F_OK) == 0)
+					{
+						setup_signal_handlers(handle_sigint_command, handle_sigquit_command);
 						execve(ret, f, shell->env);
+					}
 
 			}
 		}	

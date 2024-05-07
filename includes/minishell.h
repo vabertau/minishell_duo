@@ -19,7 +19,7 @@
 # include <sys/stat.h>
 # include "../libftprintf/ft_printf.h"
 
-// extern volatile sig_atomic_t signal_count;
+extern int g_signal_count;
 
 
 typedef enum s_type{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 16:13:24 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:21:11 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	// volatile sig_atomic_t signal_count = 0;
 	t_data	data;
-
+	setup_signal_handlers(handle_sigint_interactive, handle_sigquit);
 	(void)argc;
 	(void)argv;
 	data.last_return_code = 0;

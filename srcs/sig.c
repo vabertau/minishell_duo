@@ -6,54 +6,58 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:23:58 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 15:52:58 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:32:40 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// Gestionnaire pour SIGINT en mode interactif
+int g_signal_count = 0;
 
-// void handle_sigint_interactive(int sig) {
-//     signal_count++;
-//     write(STDOUT_FILENO, "\nmini-shell> ", 13);
-// }
+void handle_sigint_interactive(int sig) {
+    g_signal_count++;
+    write(STDOUT_FILENO, "\nmini-shell\% ", 13);
+	return ((void)sig);
+}
 
-// // Gestionnaire pour SIGINT dans un heredoc
-// void handle_sigint_heredoc(int sig) {
-//     signal_count++;
-//     write(STDOUT_FILENO, "\nmini-shell> ", 13);
-// }
+// Gestionnaire pour SIGINT dans un heredoc
+void handle_sigint_heredoc(int sig) {
+    g_signal_count++;
+    write(STDOUT_FILENO, "\nmini-shell\% ", 13);
+	return ((void)sig);
+}
 
-// // Gestionnaire pour SIGINT dans une commande bloquante
-// void handle_sigint_command(int sig) {
-//     signal_count++;
-//     write(STDOUT_FILENO, "^C\nmini-shell> ", 15);
-// }
+// Gestionnaire pour SIGINT dans une commande bloquante
+void handle_sigint_command(int sig) {
+    g_signal_count++;
+    write(STDOUT_FILENO, "^C\nmini-shell\% ", 15);
+	return ((void)sig);
+}
 
-// // Gestionnaire pour SIGQUIT dans une commande bloquante
-// void handle_sigquit_command(int sig) {
-//     signal_count++;
-//     abort();
-// }
+// Gestionnaire pour SIGQUIT dans une commande bloquante
+void handle_sigquit_command(int sig) {
+    g_signal_count++;
+    abort();
+	return ((void)sig);
+}
 
-// // Gestionnaire pour SIGQUIT qui ne fait rien (utilisé pour mode interactif et heredoc)
-// void handle_sigquit(int sig) {
-//     // Ne fait rien
-// }
+// Gestionnaire pour SIGQUIT qui ne fait rien (utilisé pour mode interactif et heredoc)
+void handle_sigquit(int sig) {
+   return ((void)sig);
+}
 
 
-// void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int)) {
+void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int)) {
 
-// 	struct sigaction sa;
-//     // Configuration pour SIGINT
-//     sa.sa_handler = sigint_handler;
-//     sigemptyset(&sa.sa_mask);
-//     sa.sa_flags = 0;
-//     sigaction(SIGINT, &sa, NULL);
+	struct sigaction sa;
+    // Configuration pour SIGINT
+    sa.sa_handler = sigint_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
 
-//     // Configuration pour SIGQUIT
-//     sa.sa_handler = sigquit_handler;
-//     sigaction(SIGQUIT, &sa, NULL);
-// }
+    // Configuration pour SIGQUIT
+    sa.sa_handler = sigquit_handler;
+    sigaction(SIGQUIT, &sa, NULL);
+}
 
