@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 22:44:15 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:00:08 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -798,4 +798,63 @@ int	main(int argc, char **argv, char **envp)
 	}
 	exit_free(&data, 0); //tmp
 }
+*/
+
+// ==== EXPANDS LLDB ====
+
+/*
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+	t_data	tmp;
+	t_exec	*tmp_exec;
+	t_type	test_type;
+	int		i;
+
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	i = 0;
+	//while (1)
+	//{
+		init_data(&data, envp);
+		//get_input(&data);
+		data.cmdline = ft_strdup("echo \"$SHELL et autre chose\"");
+		lexer(&data);
+		expands(&data);
+		parser(&data);
+		printf("cmdline = %s\n\n", data.cmdline);
+		printf("nb tokens = %i\n\n", data.nb_tokens);
+		printf("nb_cmd = %i\n\n", data.nb_cmd);
+		tmp = data;
+		test_type = WORD;
+		i = 0;
+		tmp_exec = data.exec;
+		while (i < data.nb_cmd)
+		{
+			printf("full cmd = %s\n", tmp_exec->full_cmd);
+			tmp_exec = tmp_exec->next;
+			i++;
+		}
+		tmp_exec = data.exec;
+		i = 0;
+		while (tmp_exec != NULL)
+		{
+			i = 0;
+			while (tmp_exec->split_cmd[i] != NULL)
+			{
+				printf("split cmd = %s\n", tmp_exec->split_cmd[i]);
+				i++;
+			}
+			tmp_exec = tmp_exec->next;
+		}
+		tmp_exec = data.exec;
+		i = 0;
+		tmp_exec = data.exec;
+		i = 0;
+		//free_bf_newprompt(&data);
+//	}
+	exit_free(&data, 0); //tmp
+}
+
 */

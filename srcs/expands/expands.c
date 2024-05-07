@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expands.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 22:28:40 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:01:54 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,12 @@ void    replace_var(t_data *data, char **word, int i, int len_var)
     // ADD PROTECTION
 	ft_strlcpy(ret, *word, i + 1);
     ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1);
-	//ft_strlcat(ret, &(*word[i + len_var + 1]), ft_strlen(*word) + ft_strlen(var_content) + 1); //error to suppress
-    free(*word);
+	//printf("ret = %s\n", ret);
+	//printf("word[i + len_var + 1] = %s\n", &((*word)[i + len_var + 1]));
+	//printf("catlen = %i\n",  ft_strlen(*word) + ft_strlen(var_content) - len_var);
+	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret) + ft_strlen(&((*word)[i + len_var + 1])) + 1); //error to suppress
+    //printf("ret2 = %s\n", ret);
+	free(*word);
     *word = ret;
     return ((void)(free(var_name)), (void)(free(var_content)));
 }
@@ -112,6 +116,7 @@ void    launch_expand(t_data *data, t_token *token)
         if (is_to_expand(&(word[i])))
         {
             len_var = varlen(&(word[i]));
+			//printf("lenvar = %i\n", len_var);
             replace_var(data, &word, i, len_var);
             i += len_var; // ADD COND
         }
