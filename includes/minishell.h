@@ -5,6 +5,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+#include <signal.h>
 # include <dirent.h>
 # include <string.h>
 # include <stdio.h>
@@ -155,3 +156,4 @@ void	handle_sigint_heredoc(int sig);
 void	handle_sigint_command(int sig);
 void	handle_sigquit_command(int sig);
 void	handle_sigquit(int sig);
+void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int));
