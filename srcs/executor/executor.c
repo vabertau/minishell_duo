@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 12:19:30 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:20:46 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,6 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 				k = j;
 				while (shell->env[i][j] != ':' && shell->env[i][j] && shell->env)
 					j++;
-                free(ret);
 				ret = ft_strjoin_free1(ft_substr(shell->env[i], k, ((j) - k)), f[0]);
 				if (shell->env[i][j] == ':')
 					if (access(ret, F_OK) == 0)
@@ -217,8 +216,6 @@ int exec_cmd(t_data *shell, t_exec *cmd)
 	ret2 = ft_strjoin("command not found: ", f[0]);
 	ret3 = ft_strjoin_free1(ret2, "\n");
 	ft_putstr_fd(ret3, 2);
-    if (ret)
-        free(ret);
     free(ret3);
 	exit_free(shell,127);
 	return 127;
