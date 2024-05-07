@@ -121,6 +121,7 @@ int expands(t_data *data);
 void	exit_free(t_data *data, int exit_code);
 void	free_bf_newprompt(t_data *data);
 void	set_exitloop_free(t_data *data);
+void	free_all(t_data *data);
 
 // ====== BUILTINS ======
 

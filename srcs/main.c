@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 16:21:11 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:46:19 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init_data(&data, envp);
 		minishell_loop(&data);
+		free_all(&data);
 		//printf("\n%d\n", data.last_return_code);
 	}
 	exit_free(&data, 0); //tmp

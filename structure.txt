@@ -1,4 +1,7 @@
-VALGRIND CMD: valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=readline.supp ./minishell
+VALGRIND CMD: make && valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./minishell
+
+
+OLD VALGRIND CMD: valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=readline.supp ./minishell
 
 1) get_input
 
