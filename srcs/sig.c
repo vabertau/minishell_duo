@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sig.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:23:58 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 15:33:34 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:40:30 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // Gestionnaire pour SIGINT en mode interactif
+
 void handle_sigint_interactive(int sig) {
     signal_count++;
     write(STDOUT_FILENO, "\nmini-shell> ", 13);
@@ -55,3 +56,4 @@ void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(
     sa.sa_handler = sigquit_handler;
     sigaction(SIGQUIT, &sa, NULL);
 }
+
