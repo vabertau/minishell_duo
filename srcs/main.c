@@ -6,7 +6,7 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 15:45:27 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:52:26 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	minishell_loop(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	volatile sig_atomic_t signal_count = 0;
+	// volatile sig_atomic_t signal_count = 0;
 	t_data	data;
 
 	(void)argc;

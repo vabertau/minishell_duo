@@ -6,13 +6,13 @@
 /*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:23:58 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 15:46:44 by hzaz             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:52:58 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-// // Gestionnaire pour SIGINT en mode interactif
+// Gestionnaire pour SIGINT en mode interactif
 
 // void handle_sigint_interactive(int sig) {
 //     signal_count++;
