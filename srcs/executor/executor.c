@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hzaz <hzaz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 12:33:09 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:25:01 by hzaz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,49 +98,6 @@ void handle_redirections(t_exec *cmd, t_data *shell) {
     }
 }
 
-// void prepare_out1(t_data *shell) {
-//     if (shell == NULL || shell->exec == NULL) return;  // Ajouter cette vérification
-
-//     int fd;
-//     t_exec *current_cmd = shell->exec;
-//     while (current_cmd) {
-//         t_token *redir = current_cmd->redir;
-//         while (redir) {
-//             if (redir->type == RIGHT1) {
-//                 fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//                 if (fd == -1) {
-//                     perror("open failed");
-//                     continue;  // Continue même en cas d'erreur d'ouverture
-//                 }
-//                 close(fd);
-//             }
-//             redir = redir->next;
-//         }
-//         current_cmd = current_cmd->next;
-//     }
-// }
-
-// void prepare_out2(t_data *shell) {
-//     if (shell == NULL || shell->exec == NULL) return;  // Ajouter cette vérification
-
-//     int fd;
-//     t_exec *current_cmd = shell->exec;
-//     while (current_cmd) {
-//         t_token *redir = current_cmd->redir;
-//         while (redir) {
-//             if (redir->type == RIGHT2) {
-//                 fd = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//                 if (fd == -1) {
-//                     perror("open failed");
-//                     continue;  // Continue même en cas d'erreur d'ouverture
-//                 }
-//                 close(fd);
-//             }
-//             redir = redir->next;
-//         }
-//         current_cmd = current_cmd->next;
-//     }
-// }
 
 
 // Nouvelle fonction pour préparer les heredocs

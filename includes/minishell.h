@@ -15,6 +15,9 @@
 # include <sys/stat.h>
 # include "../libftprintf/ft_printf.h"
 
+volatile sig_atomic_t signal_count = 0;
+
+
 typedef enum s_type{
 	WORD,
 	PIPE,
@@ -145,3 +148,10 @@ int safe_open(const char *pathname, int flags, mode_t mode, t_data *shell);
 void safe_close(int fd, t_data *shell);
 void safe_dup2(int oldfd, int newfd, t_data *shell);
 int		ft_strcmp(const char *s1, const char *s2);
+
+// Prototype de la fonction de gestion des signaux
+void	handle_sigint_interactive(int sig);
+void	handle_sigint_heredoc(int sig);
+void	handle_sigint_command(int sig);
+void	handle_sigquit_command(int sig);
+void	handle_sigquit(int sig);
