@@ -121,6 +121,10 @@ void	exit_free(t_data *data, int exit_code);
 void	free_bf_newprompt(t_data *data);
 void	set_exitloop_free(t_data *data);
 
+// ====== BUILTINS ======
+
+int	ft_echo(char **split_cmd);
+
 // ====== EXEC ======
 
 char	*ft_strjoin_free1(char const *s1, char const *s2);
