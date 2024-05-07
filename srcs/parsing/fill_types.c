@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fill_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:07:22 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:44 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:19:33 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int		ft_strcmp(const char *s1, const char *s2)
+int		ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 	unsigned char	*us1;

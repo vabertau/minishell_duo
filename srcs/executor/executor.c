@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/07 01:04:58 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/07 12:19:30 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,7 @@ int executor(t_data *shell) {
                 safe_dup2(pipe_fds[i * 2 + 1], STDOUT_FILENO, shell);
             }
             if (i > 0) {
-                sage_dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO, shell);
+                safe_dup2(pipe_fds[(i - 1) * 2], STDIN_FILENO, shell);
             }
             j = 0;
             while (j < 2 * (shell->nb_cmd - 1)) {
