@@ -55,6 +55,7 @@ typedef struct s_data{
 	int		nb_sq;
 	int		nb_dq;
 	int		nb_cmd;
+	int		*pipe_fds;
 	t_token	*token;
 	t_type type;
 	t_exec	*exec;
@@ -65,6 +66,7 @@ typedef struct s_data{
 	bool	sh_exit_loop;
 	bool	void_expand;
 }				t_data;
+
 
 // ====== READLINE ======
 
@@ -129,26 +131,28 @@ int	ft_echo(char **split_cmd);
 
 // ====== EXEC ======
 
-char	*ft_strjoin_free1(char const *s1, char const *s2);
+char	*join_free1(char const *s1, char const *s2);
 
 // Prototypes des fonctions de gestion de redirection
 void	handle_input_redirection(t_token *redir, t_data *shell);
-void	handle_output_redirection(t_token *redir, int fd, t_data *shell);
+void	handle_output_redirection(t_token *redir, t_data *shell);
 void	handle_here_document(t_token *redir, t_data *shell);
 void	handle_append_redirection(t_token *redir, int fd, t_data *shell);
 void	handle_redirections(t_exec *cmd, t_data *shell);
+void	fill_redir_heredoc(t_data *shell, int *cpt, t_token	*redir);
+void	prepare_heredocs(t_data *shell);
 
 // Prototypes des fonctions d'exécution de commandes
-int	exec_cmd(t_data *shell, t_exec *cmd);
+void	exec_cmd(t_data *shell, t_exec *cmd);
 int	executor(t_data *shell);
 
 // Prototype de la fonction de manipulation de chaînes et utilitaires
-char	*ft_strjoin_free1(char const *s1, char const *s2);
-char	*ft_strjoin_free2(char const *s1, char const *s2);
-int	ft_same_str(char *str1, char *str2, size_t n);
+char	*join_free1(char const *s1, char const *s2);
+char	*join_free2(char const *s1, char const *s2);
+int	ft_same_str_free(char *str1, char *str2, size_t n);
 
 // Prototype de la fonction de gestion des pipes
-int	init_pipes(t_data *shell, int *pipe_fds);
+int	init_pipes(t_data *shell);
 
 void prepare_out2(t_data *shell);
 void prepare_out1(t_data *shell);
@@ -158,6 +162,7 @@ int safe_open(const char *pathname, int flags, mode_t mode, t_data *shell);
 void safe_close(int fd, t_data *shell);
 void safe_dup2(int oldfd, int newfd, t_data *shell);
 int		ft_strcmp(const char *s1, const char *s2);
+int	ft_same_str(char *str1, char *str2, size_t n);
 
 // Prototype de la fonction de gestion des signaux
 void	handle_sigint_interactive(int sig);
@@ -167,5 +172,26 @@ void	handle_sigquit_command(int sig);
 void	handle_sigquit(int sig);
 void setup_signal_handlers(void (*sigint_handler)(int), void (*sigquit_handler)(int));
 void	exec_build(t_data *shell, char **f);
+void	dup_pipe_child(t_data *shell, t_exec *cmd, int *i);
+void setup_heredoc_handlers();
 
+int	ft_echo(char **split_cmd);
+
+/* Function prototype for ft_cd */
+int	ft_cd(char **split_cmd);
+
+/* Function prototype for ft_pwd */
+int	ft_pwd(void);
+
+/* Function prototype for ft_export */
+int	ft_export(char **split_cmd, char **envp);
+
+/* Function prototype for ft_unset */
+int	ft_unset(char **split_cmd);
+
+/* Function prototype for ft_env */
+int	ft_env(char **envp);
+
+/* Function prototype for ft_exit */
+int	ft_exit(char **split_cmd, t_data *data);
 #endif

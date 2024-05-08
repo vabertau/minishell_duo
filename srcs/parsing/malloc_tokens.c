@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:32:33 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:30:03 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:40:55 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	malloc_tokens(t_data *data)
 	t_token	*tmp;
 
 	i = 0;
-	data->token = malloc(sizeof(t_token)); //CHECKED
+	data->token = malloc(sizeof(t_token)); // CHECKED
 	if (!data->token)
 		exit_free(data, -1);
 	tmp = data->token;

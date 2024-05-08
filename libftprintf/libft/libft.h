@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 12:26:31 by vabertau          #+#    #+#             */
-/*   Updated: 2023/11/16 18:02:40 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 21:04:21 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(const char *s);
+void	ft_putstr_fd_free(char *s, int fd);
 int		ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

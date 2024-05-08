@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expands.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 18:00:35 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 21:22:53 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ void	replace_var(t_data *data, char **word, int i, int len_var)
 	else
 		var_content = fetch_var_content(data, var_name, data->env);
 	// ADD CONDITION
-	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content)
-				+ 1)); //-1 for $?
-																					// ADD PROTECTION
+	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content)+ 1));
 	ft_strlcpy(ret, *word, i + 1);
 	ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1);
 	//printf("ret = %s\n", ret);

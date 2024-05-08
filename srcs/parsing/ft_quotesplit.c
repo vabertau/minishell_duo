@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_quotesplit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:28:26 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:31:04 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:40:38 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static	int	nb_chains(char const *s, char c)
+static int	nb_chains(char const *s, char c)
 {
 	int	i;
 	int	ret;
@@ -38,12 +38,14 @@ static	int	nb_chains(char const *s, char c)
 Starts with too big malloc (ft_strlen(cmdline) + 1 the biggest possible).
 Copies 1 token, stopping at first ' ' that is not between quotes.
 copy_bet_quotes functions copies character between quotes without the quotes SQ TO ADD ??
-In the end resizing the malloc with ft_strdup and freeing tmp which is too big, too avoid unnecessary space use.
+In the end resizing the malloc with ft_strdup and freeing tmp which is too big,
+	too avoid unnecessary space use.
 
-data->is_bq is filled to track if it is between closed quotes, as quotes are suppressed we can't track it after
+data->is_bq is filled to track if it is between closed quotes,
+	as quotes are suppressed we can't track it after
 it is a temporary int *, used later to fill token types = DQUOTE
 */
-static	char	*ft_substr_quotes(t_data *data, char const *s, int *i, int j)
+static char	*ft_substr_quotes(t_data *data, char const *s, int *i, int j)
 {
 	char	*ret;
 	char	*tmp;
@@ -62,7 +64,7 @@ static	char	*ft_substr_quotes(t_data *data, char const *s, int *i, int j)
 			data->is_bq[j] = 1;
 		}
 		else if ((s[*i] == '\"') && ft_strchr(&(s[(*i) + 1]), '\"'))
-        {
+		{
 			copy_bet_dq(i, &k, s, tmp);
 			data->is_bq[j] = 2;
 		}
@@ -74,20 +76,21 @@ static	char	*ft_substr_quotes(t_data *data, char const *s, int *i, int j)
 		}
 	}
 	tmp[k] = '\0';
-	ret = ft_strdup(tmp); //CHECKED
+	ret = ft_strdup(tmp); // CHECKED
 	if (!ret)
 		return (free(tmp), NULL);
 	return (free(tmp), ret);
 }
 
-static	int	first_nonc(char const *s, char c, int i)
+static int	first_nonc(char const *s, char c, int i)
 {
 	while (s[i] == c)
 		i++;
 	return (i);
 }
 
-/* Similar to ft_split, but it will not split with c character when inside quotes.
+/* Similar to ft_split,
+	but it will not split with c character when inside quotes.
 
 As ft_substr_quotes suppresses the quotes, data->is_bq[i] stock the info 1 if
 the token was between quotes, 0 if not. Later in fill-type, that double tab
@@ -106,7 +109,8 @@ char	**ft_quotesplit(t_data *data, const char *s)
 	ret = malloc(sizeof(char *) * (nb_chains(s, ' ') + 1)); // CHECKED
 	if (!ret)
 		exit_free(data, -1);
-	data->is_bq = malloc(sizeof(int) * (data->nb_tokens + 1)); //added to watch if quote CHECKED
+	data->is_bq = malloc(sizeof(int) * (data->nb_tokens + 1));
+		// added to watch if quote CHECKED
 	if (!data->is_bq)
 		return (free(ret), exit_free(data, -1), NULL);
 	while (s[i])
@@ -130,20 +134,18 @@ char	**ft_quotesplit(t_data *data, const char *s)
 /*
 int	main(void)
 {
+	char	**result;
+	int		i;
+
 	printf("result = %i", nb_chains("test", 'a'));
 }*/
-
 /* =============== test ft_split =================== */
 /*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 void	test_ft_split(char const *s, char c)
 {
-	char	**result;
-	int		i;
-
 	result = ft_split(s, c);
 	if (result == NULL)
 	{
@@ -161,7 +163,7 @@ void	test_ft_split(char const *s, char c)
 	free(result);
 }
 
-int		main(void)
+int	main(void)
 {
 	test_ft_split("Hello,World!", ',');
 	test_ft_split("split  ||this|for|me|||||!|", '|');

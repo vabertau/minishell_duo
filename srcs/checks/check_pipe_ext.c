@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_pipe_ext.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:42:47 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:29:02 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:42:11 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Checks if the cmdline begins or ends with a pipe and returns parsing error if it
 */
 void	check_pipe_ext(t_data *data)
 {
-	int	i;
+	int		i;
 	char	*cmdline;
 
 	i = 0;
@@ -35,4 +35,3 @@ void	check_pipe_ext(t_data *data)
 	if (i > 0 && cmdline[i] == '|')
 		return ((void)parsing_error(data));
 }
-

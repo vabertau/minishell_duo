@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pinit_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 15:52:27 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:30:30 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:41:23 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void init_split_cmd(t_data *data)
+static void	init_split_cmd(t_data *data)
 {
 	t_exec	*tmp_exec;
 	int		i;
@@ -28,7 +28,8 @@ static void init_split_cmd(t_data *data)
 }
 
 /*
-Init the word value with NULL : useful if there are no redirections, it will be = NULL
+Init the word value with NULL : useful if there are no redirections,
+	it will be = NULL
 */
 static void	init_redir(t_data *data)
 {
@@ -45,7 +46,7 @@ static void	init_redir(t_data *data)
 	}
 }
 
-void init_exec(t_data *data)
+void	init_exec(t_data *data)
 {
 	init_redir(data);
 	init_split_cmd(data);

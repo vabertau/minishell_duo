@@ -6,15 +6,15 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:07:22 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/07 12:19:33 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/08 19:40:33 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	i;
+	int				i;
 	unsigned char	*us1;
 	unsigned char	*us2;
 
@@ -28,16 +28,15 @@ int		ft_strcmp(const char *s1, const char *s2)
 	return (us1[i] - us2[i]);
 }
 
-void    fill_types(t_data *data)
+void	fill_types(t_data *data)
 {
-    int i;
-	t_token *tmp;
+	int		i;
+	t_token	*tmp;
 
-
-    i = 0;
+	i = 0;
 	tmp = data->token;
-    while (i < data->nb_tokens)
-    {
+	while (i < data->nb_tokens)
+	{
 		if (!ft_strcmp(tmp->word, "|"))
 			tmp->type = PIPE;
 		else if (!ft_strcmp(tmp->word, "<"))
@@ -49,8 +48,8 @@ void    fill_types(t_data *data)
 		else if (!ft_strcmp(tmp->word, "<<"))
 			tmp->type = LEFT2;
 		else
-			tmp->type = WORD; //will change for quote tracking matters.
+			tmp->type = WORD; // will change for quote tracking matters.
 		i++;
 		tmp = tmp->next;
-    }
+	}
 }

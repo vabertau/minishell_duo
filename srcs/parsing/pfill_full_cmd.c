@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pfill_full_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:50:24 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:30:19 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:41:10 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /*
 Fills full_command in exec struct. Full command will be used in exec.
-ft_strdup for first word, then using ft_strjoin to add space and then to add next word
+ft_strdup for first word,
+	then using ft_strjoin to add space and then to add next word
 */
 
 static char	*ft_strfreejoin(char *s1, char const *s2)
@@ -64,7 +65,7 @@ static void	init_full_cmd(t_data *data)
 void	fill_full_cmd(t_data *data)
 {
 	t_exec	*tmp_exec;
-	t_token *tmp_token;
+	t_token	*tmp_token;
 	int		i;
 
 	i = 0;
@@ -77,16 +78,18 @@ void	fill_full_cmd(t_data *data)
 		{
 			if (tmp_exec->full_cmd == NULL)
 			{
-				tmp_exec->full_cmd = ft_strdup(tmp_token->word); //CHECKED
+				tmp_exec->full_cmd = ft_strdup(tmp_token->word); // CHECKED
 				if (tmp_exec->full_cmd == NULL)
 					exit_free(data, -1);
 			}
 			else
 			{
-				tmp_exec->full_cmd = ft_strfreejoin(tmp_exec->full_cmd, " "); //CHECKED
+				tmp_exec->full_cmd = ft_strfreejoin(tmp_exec->full_cmd, " ");
+				// CHECKED
 				if (tmp_exec->full_cmd == NULL)
 					exit_free(data, -1);
-				tmp_exec->full_cmd = ft_strfreejoin(tmp_exec->full_cmd, tmp_token->word); //CHECKED
+				tmp_exec->full_cmd = ft_strfreejoin(tmp_exec->full_cmd,
+													tmp_token->word); // CHECKED
 				if (tmp_exec->full_cmd == NULL)
 					exit_free(data, -1);
 			}

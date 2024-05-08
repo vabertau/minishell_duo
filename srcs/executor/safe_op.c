@@ -1,39 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   copy_bet_q.c                                       :+:      :+:    :+:   */
+/*   safe_op.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 16:50:32 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:40:17 by hedi             ###   ########.fr       */
+/*   Created: 2024/05/08 19:47:05 by hedi              #+#    #+#             */
+/*   Updated: 2024/05/08 21:02:26 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// copies characters between quotes without copying the quotes. SQ TO COPY ?
-void	copy_bet_sq(int *i, int *j, const char *s, char *tmp)
+int	safe_open(const char *pathname, int flags, mode_t mode, t_data *shell)
 {
-	(*i)++;
-	while (s[*i] && s[*i] != '\'')
+	int	fd;
+
+	fd = open(pathname, flags, mode);
+	if (fd == -1)
 	{
-		tmp[*j] = s[*i];
-		(*i)++;
-		(*j)++;
+		perror("open");
+		exit_free(shell, EXIT_FAILURE);
 	}
-	(*i)++;
+	return (fd);
 }
 
-// copies characters between quotes without copying the quotes.
-void	copy_bet_dq(int *i, int *j, const char *s, char *tmp)
+void	safe_close(int fd, t_data *shell)
 {
-	(*i)++;
-	while (s[*i] && s[*i] != '\"')
+	if (close(fd) == -1)
 	{
-		tmp[*j] = s[*i];
-		(*i)++;
-		(*j)++;
+		perror("close");
+		exit_free(shell, EXIT_FAILURE);
 	}
-	(*i)++;
+}
+
+void	safe_dup2(int oldfd, int newfd, t_data *shell)
+{
+	if (dup2(oldfd, newfd) == -1)
+	{
+		perror("dup2");
+		exit_free(shell, EXIT_FAILURE);
+	}
 }

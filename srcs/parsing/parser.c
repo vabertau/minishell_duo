@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:59:10 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 17:22:17 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 22:54:35 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,7 @@ void	parser(t_data *data)
 	if (data->sh_exit_loop)
 		return ;
 	fill_redir(data);
+	data->pipe_fds = malloc(sizeof(int) * (2 * (data->nb_cmd - 1)));
+	if (!data->pipe_fds)
+		return ;
 }

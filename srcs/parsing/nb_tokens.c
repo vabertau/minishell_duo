@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nb_tokens.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 17:42:01 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/06 16:30:07 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:40:58 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ void	nb_tokens(t_data *data)
 		if (data->cmdline[i] && (data->cmdline[i] != ' '))
 		{
 			nb++;
-			if ((data->cmdline[i] == '\'') && ft_strchr(&(data->cmdline[i + 1]), '\''))
+			if ((data->cmdline[i] == '\'') && ft_strchr(&(data->cmdline[i + 1]),
+					'\''))
 				i += skip_sq(&(data->cmdline[i]));
-			if ((data->cmdline[i] == '\"') && ft_strchr(&(data->cmdline[i + 1]), '\"'))
+			if ((data->cmdline[i] == '\"') && ft_strchr(&(data->cmdline[i + 1]),
+					'\"'))
 				i += skip_dq(&(data->cmdline[i]));
 			i += skip_ns(&(data->cmdline[i]));
 		}
