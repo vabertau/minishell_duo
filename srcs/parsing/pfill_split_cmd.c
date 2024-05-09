@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   pfill_split_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:04:19 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:41:18 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/09 17:25:01 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static void	increment_ifredir(int *j, t_token *tmp_token, t_token *previous_token)
+{
+	if (tmp_token->type == WORD && !((previous_token != NULL)
+		&& (previous_token->type == RIGHT1
+			|| previous_token->type == RIGHT2
+			|| previous_token->type == LEFT1
+			|| previous_token->type == LEFT2)))
+			(*j)++;
+}
 
 /*
 Goes through all the tokens,
@@ -36,14 +46,15 @@ static void	malloc_split_cmd(t_data *data)
 	previous_token = NULL;
 	while (i < data->nb_tokens)
 	{
+		/*
 		if (tmp_token->type == WORD && !((previous_token != NULL)
 				&& (previous_token->type == RIGHT1
 					|| previous_token->type == RIGHT2
 					|| previous_token->type == LEFT1
 					|| previous_token->type == LEFT2)))
-			j++;
+			j++;*/
+		increment_ifredir(&j, tmp_token, previous_token);
 		if (tmp_token->type == PIPE || (i + 1) == data->nb_tokens)
-		// last condition to fix to find if last word
 		{
 			tmp_exec->split_cmd = malloc(sizeof(char *) * (j + 1)); // CHECKED
 			if (!tmp_exec->split_cmd)

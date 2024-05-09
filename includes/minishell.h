@@ -115,6 +115,7 @@ void				fill_split_cmd(t_data *data);
 void				nb_redir(t_data *data);
 void				fill_redir(t_data *data);
 void				init_exec(t_data *data);
+int					fixed_cmdline_len(char *cmdline);
 
 // ===== EXPANDS =====
 
