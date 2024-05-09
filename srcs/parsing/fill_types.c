@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:07:22 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:05:03 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:40:33 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	fill_types(t_data *data)
 		else if (!ft_strcmp(tmp->word, "<<"))
 			tmp->type = LEFT2;
 		else
-			tmp->type = WORD;
+			tmp->type = WORD; // will change for quote tracking matters.
 		i++;
 		tmp = tmp->next;
 	}

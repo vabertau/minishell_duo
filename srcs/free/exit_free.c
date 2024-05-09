@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   exit_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:02:38 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:03:35 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 22:48:38 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/*
+static int	free_dtab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	return (0);
+}
+*/
 static void	free_token(t_token *token)
 {
 	t_token	*tmp;
@@ -45,14 +60,14 @@ void	free_exec(t_data *data)
 	while (tmp_exec)
 	{
 		if (tmp_exec->redir)
-			free(tmp_exec->redir);
+			free(tmp_exec->redir); // free redir FREE TO DO IN REDIR
 		if (tmp_exec->full_cmd)
-			free(tmp_exec->full_cmd);
+			free(tmp_exec->full_cmd); // free full_cmd
 		if (tmp_exec->split_cmd)
 			free(tmp_exec->split_cmd);
 		tmp_exec_tf = tmp_exec;
 		tmp_exec = tmp_exec->next;
-		free(tmp_exec_tf);
+		free(tmp_exec_tf); // free exec
 	}
 }
 
@@ -80,5 +95,6 @@ void	exit_free(t_data *data, int exit_code)
 
 void	set_exitloop_free(t_data *data)
 {
+	// free_all(data);
 	data->sh_exit_loop = 1;
 }

@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pfill_split_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:04:19 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:32:41 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:41:18 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static void	increment_redir(int *j, t_token *tmp_token, t_token *previous_token)
-{
-	if (tmp_token->type == WORD && !((previous_token != NULL)
-			&& (previous_token->type == RIGHT1 || previous_token->type == RIGHT2
-				|| previous_token->type == LEFT1
-				|| previous_token->type == LEFT2)))
-		(*j)++;
-}
-
-static void	init_mall_sc(int *i, int *j, t_token **previous_token)
-{
-	*i = 0;
-	*j = 0;
-	*previous_token = NULL;
-}
 
 /*
 Goes through all the tokens,
@@ -45,13 +29,21 @@ static void	malloc_split_cmd(t_data *data)
 	int		i;
 	int		j;
 
+	i = 0;
+	j = 0;
 	tmp_exec = data->exec;
 	tmp_token = data->token;
-	init_mall_sc(&i, &j, &previous_token);
+	previous_token = NULL;
 	while (i < data->nb_tokens)
 	{
-		increment_redir(&j, tmp_token, previous_token);
+		if (tmp_token->type == WORD && !((previous_token != NULL)
+				&& (previous_token->type == RIGHT1
+					|| previous_token->type == RIGHT2
+					|| previous_token->type == LEFT1
+					|| previous_token->type == LEFT2)))
+			j++;
 		if (tmp_token->type == PIPE || (i + 1) == data->nb_tokens)
+		// last condition to fix to find if last word
 		{
 			tmp_exec->split_cmd = malloc(sizeof(char *) * (j + 1)); // CHECKED
 			if (!tmp_exec->split_cmd)

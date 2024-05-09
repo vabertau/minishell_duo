@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   spaces_bet_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 09:48:08 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:11:29 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:41:42 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	fixed_cmdline_len(char *cmdline)
+{
+	int	i;
+	int	ret;
+
+	i = 0;
+	ret = 0;
+	while (cmdline[i])
+	{
+		i += skip_sq(&(cmdline[i]));
+		if (cmdline[i] == '<' || cmdline[i] == '>' || cmdline[i] == '|')
+		{
+			if (i > 0 && cmdline[i - 1] != '<' && cmdline[i - 1] != '>'
+				&& cmdline[i - 1] != '|' && cmdline[i - 1] != ' ')
+				ret++;
+			if (cmdline[i + 1] != '<' && cmdline[i + 1] != '>' && cmdline[i
+				+ 1] != '|' && cmdline[i + 1] != ' ')
+				ret++;
+		}
+		i++;
+	}
+	return (ret + ft_strlen(cmdline));
+}
 
 /* Searches for a missing space before a special character,
 	and adds it if it is missing
@@ -32,8 +56,8 @@ static int	add_space_bf(int i, char *ret, char *tmp)
  */
 static void	add_space_af(int i, int sp_bf, char *ret, char *tmp)
 {
-	if (tmp[i + 1] != '<' && tmp[i + 1] != '>'
-		&& tmp[i + 1] != '|' && tmp[i + 1] != ' ')
+	if (tmp[i + 1] != '<' && tmp[i + 1] != '>' && tmp[i + 1] != '|' && tmp[i
+		+ 1] != ' ')
 	{
 		if (sp_bf == 1)
 		{
@@ -50,8 +74,7 @@ static void	add_space_af(int i, int sp_bf, char *ret, char *tmp)
 	}
 }
 
-/* Calls functions to add space before and after
-special characters if a space is missing.
+/* Calls functions to add space before and after special characters if a space is missing.
 stores a boolean sp_bf for index matters in add_space_af */
 static void	add_space_bf_af(int i, char *ret, char *tmp)
 {
