@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   check_redirfile.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:01:41 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:42:26 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/09 16:57:16 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-Iterates through each token and checks if the token is an append. If it is an append,
-	checks if the
+Iterates through each token and checks if the token is an append.
+If it is an append, checks if the
 next one is a word. If not, parsing error.
 */
 void	check_redirfile(t_data *data)
