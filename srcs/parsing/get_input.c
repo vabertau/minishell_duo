@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:55:39 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:40:43 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/09 15:20:50 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	get_input(t_data *data)
 	char	*line;
 
 	line = readline("minishell\% ");
+	//line = ft_strdup("echo \"> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<\"");
 	if (line == NULL)
 	{
 		ft_printf("\n");

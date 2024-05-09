@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pnb_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:40:54 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:41:33 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/09 15:31:42 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void	nb_cmd(t_data *data)
 	cmdline = data->cmdline;
 	while (cmdline[i])
 	{
+		if (cmdline[i] == '\'')
+			i += skip_sq(&(cmdline[i]));
+		if (cmdline[i] == '\"')
+			i += skip_dq(&(cmdline[i]));
 		if (cmdline[i] == '|')
 			ret++;
 		i++;

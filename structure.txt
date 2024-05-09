@@ -8,8 +8,12 @@ OLD VALGRIND CMD: valgrind --leak-check=full --show-leak-kinds=all --track-fds=y
 TO DO
 
 cd not working
+ctrl d met un espace alors au il ne doit pas en mettre
 
+export
+unset
 
+checker comment doit fonctionner la commande exit
 
 1) get_input
 
