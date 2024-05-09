@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:00:31 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:29:48 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 Checks for an index of a word if it is to expand
 */
-/*
+
 bool	is_to_expand(char *word)
 {
 	int	i;
@@ -26,7 +26,7 @@ bool	is_to_expand(char *word)
 		return (1);
 	return (0);
 }
-*/
+
 int	varlen(char *word)
 {
 	int	ret;

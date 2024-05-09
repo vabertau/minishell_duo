@@ -8,6 +8,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <signal.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -119,7 +120,6 @@ void				init_exec(t_data *data);
 // ===== EXPANDS =====
 
 int					expands(t_data *data);
-bool				is_to_expand(char *word);
 
 // ====== EXIT ======
 
