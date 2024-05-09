@@ -178,10 +178,10 @@ void setup_heredoc_handlers();
 int	ft_echo(char **split_cmd);
 
 /* Function prototype for ft_cd */
-int	ft_cd(char **split_cmd);
+int	ft_cd(char **split_cmd, t_data *data);
 
 /* Function prototype for ft_pwd */
-int	ft_pwd(void);
+int	ft_pwd(t_data *data);
 
 /* Function prototype for ft_export */
 int	ft_export(char **split_cmd, char **envp);
