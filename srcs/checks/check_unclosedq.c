@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_unclosedq.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:39:43 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 16:55:25 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:42:17 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Checks for unclosed quotes in the beginning and returns
-parsing error if there are any.
+/* Checks for unclosed quotes in the beginning and returns parsing error if there are any.
 Better to check in the beginning,
 	allows not to handle unclosed quotes in tokens*/
 int	check_unclosedq(t_data *data)
