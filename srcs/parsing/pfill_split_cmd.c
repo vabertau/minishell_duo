@@ -6,20 +6,26 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:04:19 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:25:01 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:32:41 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	increment_ifredir(int *j, t_token *tmp_token, t_token *previous_token)
+static void	increment_redir(int *j, t_token *tmp_token, t_token *previous_token)
 {
 	if (tmp_token->type == WORD && !((previous_token != NULL)
-		&& (previous_token->type == RIGHT1
-			|| previous_token->type == RIGHT2
-			|| previous_token->type == LEFT1
-			|| previous_token->type == LEFT2)))
-			(*j)++;
+			&& (previous_token->type == RIGHT1 || previous_token->type == RIGHT2
+				|| previous_token->type == LEFT1
+				|| previous_token->type == LEFT2)))
+		(*j)++;
+}
+
+static void	init_mall_sc(int *i, int *j, t_token **previous_token)
+{
+	*i = 0;
+	*j = 0;
+	*previous_token = NULL;
 }
 
 /*
@@ -39,21 +45,12 @@ static void	malloc_split_cmd(t_data *data)
 	int		i;
 	int		j;
 
-	i = 0;
-	j = 0;
 	tmp_exec = data->exec;
 	tmp_token = data->token;
-	previous_token = NULL;
+	init_mall_sc(&i, &j, &previous_token);
 	while (i < data->nb_tokens)
 	{
-		/*
-		if (tmp_token->type == WORD && !((previous_token != NULL)
-				&& (previous_token->type == RIGHT1
-					|| previous_token->type == RIGHT2
-					|| previous_token->type == LEFT1
-					|| previous_token->type == LEFT2)))
-			j++;*/
-		increment_ifredir(&j, tmp_token, previous_token);
+		increment_redir(&j, tmp_token, previous_token);
 		if (tmp_token->type == PIPE || (i + 1) == data->nb_tokens)
 		{
 			tmp_exec->split_cmd = malloc(sizeof(char *) * (j + 1)); // CHECKED
