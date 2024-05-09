@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 15:32:57 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:27:46 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	minishell_loop(t_data *data)
 	parser(data);
 	if (data->sh_exit_loop)
 		return (-1);
-	//aff_val(data);
+	// aff_val(data);
 	data->last_return_code = executor(data);
 	return (0);
 }
@@ -432,7 +432,8 @@ int	main(int argc, char **argv, char **envp)
 	//{
 		init_data(&data, envp);
 		//get_input(&data);
-		data.cmdline = ft_strdup("echo \"> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<\"");
+		data.cmdline = ft_strdup("echo \"> >> < * ? [ ] | ; [ ] ||
+				&& ( ) & # $  <<\"");
 		lexer(&data);
 		parser(&data);
 		printf("cmdline = %s\n\n", data.cmdline);

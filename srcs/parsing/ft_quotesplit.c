@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_quotesplit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:28:26 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:40:38 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/09 16:26:17 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**ft_quotesplit(t_data *data, const char *s)
 	if (!ret)
 		exit_free(data, -1);
 	data->is_bq = malloc(sizeof(int) * (data->nb_tokens + 1));
-		// added to watch if quote CHECKED
+	// added to watch if quote CHECKED
 	if (!data->is_bq)
 		return (free(ret), exit_free(data, -1), NULL);
 	while (s[i])
