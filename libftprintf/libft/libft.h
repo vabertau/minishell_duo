@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 12:26:31 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 21:04:21 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/10 22:58:02 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*ft_strdup(const char *s);
 void	ft_putstr_fd_free(char *s, int fd);
 int		ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strndup(const char *s, int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	ft_putchar_fd(char c, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);

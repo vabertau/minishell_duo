@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 16:27:46 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:03:25 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,15 @@ void	aff_val(t_data *data)
 	t_token	*cur_redir;
 
 	cur_cmd = data->exec;
-	while (cur_cmd)
+	int j = 1;
+	while (cur_cmd && j++)
 	{
+
+		int i = -1;
 		cur_redir = cur_cmd->redir;
-		printf("%s\n\n\n", cur_cmd->full_cmd);
+		printf("full[%d] = %s\n\n\n", j,cur_cmd->full_cmd);
+		while(cur_cmd->split_cmd[++i])
+			printf("split[%d][%d] = %s\n\n\n", j,i,cur_cmd->split_cmd[i]);
 		while (cur_redir)
 		{
 			printf("%s\n%u\n", cur_redir->word, cur_redir->type);
@@ -29,6 +34,30 @@ void	aff_val(t_data *data)
 		}
 		cur_cmd = cur_cmd->next;
 	}
+}
+
+char **copy_envp(char **envp)
+{
+    int i = 0;
+    char **new_env;
+
+    // Compter le nombre de variables d'environnement
+    while (envp[i])
+        i++;
+    
+    // Allouer de l'espace pour le nouveau tableau d'environnement, +1 pour NULL terminateur
+    new_env = malloc((i + 1) * sizeof(char *));
+    if (!new_env)
+        return (NULL);
+
+    // Copier chaque variable d'environnement
+    for (int j = 0; j < i; j++)
+        new_env[j] = ft_strdup(envp[j]);
+
+    // Assurer que le dernier élément est NULL
+    new_env[i] = NULL;
+
+    return new_env;
 }
 
 int	minishell_loop(t_data *data)
@@ -43,7 +72,7 @@ int	minishell_loop(t_data *data)
 	parser(data);
 	if (data->sh_exit_loop)
 		return (-1);
-	// aff_val(data);
+	 //aff_val(data);
 	data->last_return_code = executor(data);
 	return (0);
 }
@@ -57,9 +86,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	data.last_return_code = 0;
+	data.env = copy_envp(envp);
 	while (1)
 	{
-		init_data(&data, envp);
+		init_data(&data);
 		minishell_loop(&data);
 		// if (!data.sh_exit_loop)
 		free_all(&data);

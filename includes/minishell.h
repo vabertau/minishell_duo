@@ -75,7 +75,7 @@ void				get_input(t_data *data);
 
 // ====== INIT_DATA ======
 
-void				init_data(t_data *data, char **env);
+void				init_data(t_data *data);
 
 // ===== CHECKER =====
 
@@ -190,13 +190,21 @@ int					ft_cd(char **split_cmd, t_data *data);
 int					ft_pwd(t_data *data);
 
 /* Function prototype for ft_export */
-int					ft_export(char **split_cmd, char **envp);
-
-/* Function prototype for ft_unset */
-int					ft_unset(char **split_cmd);
-
-/* Function prototype for ft_env */
-int					ft_env(char **envp);
+int	ft_same_str_exact_free1(char *str1, char *str2);
+char	*ft_strndup_var(const char *s, int n);
+char	**malloc_var(int i, char *s, int j, int n);
+char	**split_var(char *s, t_data *shell);
+int	find_index_env(char *env);
+int	var_in_env(char *s, t_data *shell);
+int	check_plus(char *s);
+void	ft_update_env(char *str, t_data *shell, int pos);
+void	ft_add_env(char *s, t_data *shell);
+int	ft_putenv(char *s, t_data *shell);
+void	ft_printf_var_env(char *var);
+int	check_cmd(char *s);
+int	ft_export(char **split_cmd, t_data *shell);
+int	ft_unset(char **split_cmd);
+int	ft_env(char **envp);
 
 /* Function prototype for ft_exit */
 int					ft_exit(char **split_cmd, t_data *data);

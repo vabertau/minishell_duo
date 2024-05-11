@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:08:17 by hedi              #+#    #+#             */
-/*   Updated: 2024/05/09 13:21:37 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/11 02:16:28 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	exec_build(t_data *shell, char **f)
 		shell->last_return_code = ft_cd(f, shell);
 	else if (ft_same_str(f[0], "pwd", 3))
 		shell->last_return_code = ft_pwd(shell);
-	// else if (ft_same_str(f[0], "export", 6))
-	// 	shell->last_return_code = ft_export(f, shell->env);
-	// else if (ft_same_str(f[0], "unset", 5))
-	// 	shell->last_return_code = ft_unset(f);
-	// else if (ft_same_str(f[0], "env", 3))
-		// shell->last_return_code = ft_env(shell->env);
+	else if (ft_same_str(f[0], "export", 6))
+		shell->last_return_code = ft_export(f, shell);
+	else if (ft_same_str(f[0], "unset", 5))
+		shell->last_return_code = ft_unset(f);
+	else if (ft_same_str(f[0], "env", 3))
+		shell->last_return_code = ft_env(shell->env);
 	else if (ft_same_str(f[0], "exit", 4))
 		ft_exit(f, shell); // Note que cette fonction peut arrêter le programme.
 	else
