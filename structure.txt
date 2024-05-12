@@ -7,6 +7,8 @@ OLD VALGRIND CMD: valgrind --leak-check=full --show-leak-kinds=all --track-fds=y
 
 TO DO
 
+copy envp LEAKS
+
 cd not working
 ctrl d met un espace alors au il ne doit pas en mettre
 

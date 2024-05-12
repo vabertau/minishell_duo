@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/09 17:00:31 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/12 11:13:26 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,16 @@ char	*fetch_var_content(t_data *data, char *var, char **env)
 			j = 0;
 			while (env[i][j] != '=')
 				j++;
-			ret = ft_substr(env[i], j + 1, ft_strlen(env[i])); // TO PROTECT
+			ret = ft_substr(env[i], j + 1, ft_strlen(env[i])); // CHECKED
 			if (!ret)
-				return (NULL);
+				return (free(var), exit_free(data, -1), NULL);
 			return (ret);
 		}
 		i++;
 	}
-	ret = ft_strdup(""); // to protect
+	ret = ft_strdup(""); // CHECKED
+	if (!ret)
+		return (free(var), exit_free(data, -1), NULL);
 	data->void_expand = 1;
 	return (ret);
 }
@@ -77,22 +79,30 @@ void	replace_var(t_data *data, char **word, int i, int len_var)
 	char	*var_content;
 	char	*ret;
 
-	var_name = ft_substr(*word, i + 1, len_var);
+	var_name = ft_substr(*word, i + 1, len_var); // CHECKED
 	data->void_expand = 0;
 	if (!var_name)
-		exit_free(data, -1); // TO CHECK
+		exit_free(data, -1);
 	if ((len_var == 1) && (*word)[i + 1] == '?')
-		// INSERT HERE AFTER SIGNALS RETURN OF LAST CMD
-		var_content = ft_itoa(data->last_return_code); // PROTECT ITOA
+	{
+		var_content = ft_itoa(data->last_return_code); // CHECKED
+		if (var_content == NULL)
+			return ((void)free(var_name), exit_free(data, -1));
+	}
 	else
 		var_content = fetch_var_content(data, var_name, data->env);
-	// ADD CONDITION
 	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content)
-				+ 1));
+				+ 1)); //CHECKED
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
 	ft_strlcpy(ret, *word, i + 1);
-	ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1);
+	ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1); // CHECKED
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
 	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret)
-		+ ft_strlen(&((*word)[i + len_var + 1])) + 1); // error to suppress
+		+ ft_strlen(&((*word)[i + len_var + 1])) + 1); // CHECKED
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
 	// printf("ret2 = %s\n", ret);
 	free(*word);
 	*word = ret;
