@@ -6,27 +6,12 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:46:03 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/12 11:13:26 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/12 11:43:34 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-Checks for an index of a word if it is to expand
-*/
-/*
-bool	is_to_expand(char *word)
-{
-	int	i;
-
-	i = 0;
-	if (word[i] == '$' && word[i + 1] && (ft_isalnum(word[i + 1]) || word[i
-			+ 1] == '_' || word[i + 1] == '?'))
-		return (1);
-	return (0);
-}
-*/
 int	varlen(char *word)
 {
 	int	ret;
@@ -59,56 +44,90 @@ char	*fetch_var_content(t_data *data, char *var, char **env)
 			j = 0;
 			while (env[i][j] != '=')
 				j++;
-			ret = ft_substr(env[i], j + 1, ft_strlen(env[i])); // CHECKED
+			ret = ft_substr(env[i], j + 1, ft_strlen(env[i]));
 			if (!ret)
 				return (free(var), exit_free(data, -1), NULL);
 			return (ret);
 		}
 		i++;
 	}
-	ret = ft_strdup(""); // CHECKED
+	ret = ft_strdup("");
 	if (!ret)
 		return (free(var), exit_free(data, -1), NULL);
 	data->void_expand = 1;
 	return (ret);
 }
-
-void	replace_var(t_data *data, char **word, int i, int len_var)
+/*
+void	fill_ret(t_data *data, char **word, char *var_cont, char *var_name)
+{
+	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_cont) + 1));
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_cont), exit_free(data,
+				-1));
+	ft_strlcpy(ret, *word, i + 1);
+	ft_strlcat(ret, var_cont, ft_strlen(ret) + ft_strlen(var_cont) + 1);
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_cont), exit_free(data,
+				-1));
+	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret)
+		+ ft_strlen(&((*word)[i + len_var + 1])) + 1);
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_cont), exit_free(data,
+				-1));
+	free(*word);
+}
+*/
+/*
+static char	*init_replace_var(t_data *data, char **word, int i, int len_var)
 {
 	char	*var_name;
-	char	*var_content;
-	char	*ret;
 
-	var_name = ft_substr(*word, i + 1, len_var); // CHECKED
+	var_name = ft_substr(*word, i + 1, len_var);
 	data->void_expand = 0;
 	if (!var_name)
 		exit_free(data, -1);
-	if ((len_var == 1) && (*word)[i + 1] == '?')
-	{
-		var_content = ft_itoa(data->last_return_code); // CHECKED
-		if (var_content == NULL)
-			return ((void)free(var_name), exit_free(data, -1));
-	}
-	else
-		var_content = fetch_var_content(data, var_name, data->env);
-	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_content)
-				+ 1)); //CHECKED
-	if (ret == NULL)
-		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
-	ft_strlcpy(ret, *word, i + 1);
-	ft_strlcat(ret, var_content, ft_strlen(ret) + ft_strlen(var_content) + 1); // CHECKED
-	if (ret == NULL)
-		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
-	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret)
-		+ ft_strlen(&((*word)[i + len_var + 1])) + 1); // CHECKED
-	if (ret == NULL)
-		return ((void)free(var_name), (void)free(var_content), exit_free(data, -1));
-	// printf("ret2 = %s\n", ret);
-	free(*word);
-	*word = ret;
-	return ((void)(free(var_name)), (void)(free(var_content)));
+	return (var_name);
 }
 
+static char	*ft_itoa_protect(t_data *data, char *var_name)
+{
+	char	*var_c;
+
+	var_c = ft_itoa(data->last_return_code);
+	if (var_c == NULL)
+		return (free(var_name), exit_free(data, -1), NULL);
+	return (var_c);
+}
+*/
+/* var_c = var_content */
+/*
+void	replace_var(t_data *data, char **word, int i, int len_var)
+{
+	char	*var_name;
+	char	*var_c;
+	char	*ret;
+
+	var_name = init_replace_var(data, word, i, len_var);
+	if ((len_var == 1) && (*word)[i + 1] == '?')
+		var_c = ft_itoa_protect(data, var_name);
+	else
+		var_c = fetch_var_content(data, var_name, data->env);
+	ret = malloc(sizeof(char) * (ft_strlen(*word) + ft_strlen(var_c) + 1));
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_c), exit_free(data, -1));
+	ft_strlcpy(ret, *word, i + 1);
+	ft_strlcat(ret, var_c, ft_strlen(ret) + ft_strlen(var_c) + 1);
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_c), exit_free(data, -1));
+	ft_strlcat(ret, &((*word)[i + len_var + 1]), ft_strlen(ret)
+		+ ft_strlen(&((*word)[i + len_var + 1])) + 1);
+	if (ret == NULL)
+		return ((void)free(var_name), (void)free(var_c), exit_free(data, -1));
+	free(*word);
+	*word = ret;
+	return ((void)(free(var_name)), (void)(free(var_c)));
+}
+*/
 /*
 Iterates through all the characters of a word
 If character is a $ and its an expand
@@ -129,12 +148,10 @@ void	launch_expand(t_data *data, t_token *token)
 		if (is_to_expand(&(word[i])))
 		{
 			len_var = varlen(&(word[i]));
-			// printf("lenvar = %i\n", len_var);
 			replace_var(data, &word, i, len_var);
-			i += len_var; // ADD COND
+			i += len_var;
 		}
 		i++;
-		// ADD COND
 	}
 	token->word = word;
 }
@@ -153,7 +170,6 @@ int	expands(t_data *data)
 	while (i < data->nb_tokens)
 	{
 		if (!(data->is_bq[i] == 1) && ft_strchr(tmp->word, '$'))
-			// if it is to expand
 			launch_expand(data, tmp);
 		i++;
 		tmp = tmp->next;
