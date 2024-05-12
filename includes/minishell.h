@@ -33,11 +33,11 @@ typedef enum s_type
 
 typedef struct s_env
 {
-	int		index;
-	char **first_env;
-	char	*var;
-	char	*var_name;
-	char	*val;
+	int				index;
+	char			**first_env;
+	char			*var;
+	char			*var_name;
+	char			*val;
 	struct s_env	*next;
 }					t_env;
 
@@ -112,8 +112,8 @@ int					skip_dq(char *cmdline);
 void				malloc_tokens(t_data *data);
 void				fill_tokens(t_data *data);
 char				**ft_quotesplit(t_data *data, char const *s);
-void				copy_bet_sq(int *i, int *j, const char *s, char *tmp);
-void				copy_bet_dq(int *i, int *j, const char *s, char *tmp);
+int					copy_bet_sq(int *i, int *j, const char *s, char *tmp);
+int					copy_bet_dq(int *i, int *j, const char *s, char *tmp);
 void				fill_types(t_data *data);
 
 // ===== PARSER =====
@@ -127,6 +127,8 @@ void				nb_redir(t_data *data);
 void				fill_redir(t_data *data);
 void				init_exec(t_data *data);
 int					fixed_cmdline_len(char *cmdline);
+int					nb_chains(char const *s, char c);
+int					first_nonc(char const *s, char c, int i);
 
 // ===== EXPANDS =====
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   copy_bet_q.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:50:32 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:40:17 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 19:08:15 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 // copies characters between quotes without copying the quotes. SQ TO COPY ?
-void	copy_bet_sq(int *i, int *j, const char *s, char *tmp)
+int	copy_bet_sq(int *i, int *j, const char *s, char *tmp)
 {
 	(*i)++;
 	while (s[*i] && s[*i] != '\'')
@@ -23,10 +23,11 @@ void	copy_bet_sq(int *i, int *j, const char *s, char *tmp)
 		(*j)++;
 	}
 	(*i)++;
+	return (0);
 }
 
 // copies characters between quotes without copying the quotes.
-void	copy_bet_dq(int *i, int *j, const char *s, char *tmp)
+int	copy_bet_dq(int *i, int *j, const char *s, char *tmp)
 {
 	(*i)++;
 	while (s[*i] && s[*i] != '\"')
@@ -36,4 +37,5 @@ void	copy_bet_dq(int *i, int *j, const char *s, char *tmp)
 		(*j)++;
 	}
 	(*i)++;
+	return (0);
 }

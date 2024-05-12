@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/12 17:05:08 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 18:12:30 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	trim_env(t_data *shell)
 		while (shell->env->var[i] && shell->env->var[i] != '=')
 			i++;
 		shell->env->var_name = ft_strndup(shell->env->var, i);
-		
+
 		if (!shell->env->var_name)
 			perror("malloc");
 		if (!shell->env->var[i++])
@@ -131,11 +131,6 @@ int	main(int argc, char **argv, char **envp)
 	data.envp = envp;
 	e = data.env;
 	trim_env(&data);
-	while (e)
-	{
-		printf("\n%s\n", e->var_name);
-		e = e->next;
-	}
 	while (1)
 	{
 		init_data(&data);
