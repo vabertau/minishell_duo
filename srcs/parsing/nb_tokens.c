@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nb_tokens.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 17:42:01 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:40:58 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 17:02:35 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ static int	skip_ns(char *cmdline)
 	return (i);
 }
 
-/*counts the nb of tokens that are going to be filled afterwards. By spliting with spaces,
+/*counts the nb of tokens that are going to be filled afterwards.
+By spliting with spaces,
 skipping quotes.
 
-ft_strchr is used to search for matching quote and avoid errors on nb_token when quotes are unclosed
+ft_strchr is used to search for matching quote and avoid
+errors on nb_token when quotes are unclosed
 */
 void	nb_tokens(t_data *data)
 {
