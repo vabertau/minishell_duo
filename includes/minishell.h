@@ -115,6 +115,7 @@ void				fill_split_cmd(t_data *data);
 void				nb_redir(t_data *data);
 void				fill_redir(t_data *data);
 void				init_exec(t_data *data);
+int					fixed_cmdline_len(char *cmdline);
 
 // ===== EXPANDS =====
 
@@ -129,6 +130,7 @@ void				exit_free(t_data *data, int exit_code);
 void				free_bf_newprompt(t_data *data);
 void				set_exitloop_free(t_data *data);
 void				free_all(t_data *data);
+void				free_token(t_token *token);
 
 // ====== BUILTINS ======
 

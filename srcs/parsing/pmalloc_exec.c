@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pmalloc_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:52:51 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/08 19:41:30 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 12:54:45 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	malloc_exec(t_data *data)
 	int		i;
 
 	i = 0;
-	data->exec = malloc(sizeof(t_exec)); // CHECKED
+	data->exec = malloc(sizeof(t_exec));
 	if (!data->exec)
 		exit_free(data, -1);
 	tmp = data->exec;
@@ -30,7 +30,7 @@ void	malloc_exec(t_data *data)
 	tmp->redir = NULL;
 	while (i < data->nb_cmd - 1)
 	{
-		tmp->next = malloc(sizeof(t_exec)); // CHECKED
+		tmp->next = malloc(sizeof(t_exec));
 		if (!tmp->next)
 			exit_free(data, -1);
 		tmp->full_cmd = NULL;

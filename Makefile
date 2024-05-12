@@ -10,7 +10,9 @@ parsing/copy_bet_q.c parsing/fill_types.c checks/check_unclosedq.c parsing/parsi
 checks/check_pipe_ext.c parsing/pnb_cmd.c parsing/parser.c parsing/pmalloc_exec.c parsing/pfill_full_cmd.c parsing/pfill_split_cmd.c parsing/pfill_redir.c \
 parsing/pinit_exec.c executor/executor.c expands/expands.c checks_tokens/check_redirfile.c sig.c \
 executor/finish_him.c executor/redir.c executor/safe_op.c executor/utils.c \
-builtins/ft_echo.c builtins/dir.c builtins/env.c checks/check_fasa.c expands/is_to_expand.c expands/replace_var.c
+builtins/ft_echo.c builtins/dir.c builtins/env.c checks/check_fasa.c expands/is_to_expand.c expands/replace_var.c \
+free/exit_free2.c parsing/spaces_bet_tokens2.c parsing/pfill_redir2.c
+
 SRCS = $(addprefix srcs/, $(FILENAMES))
 
 OBJS = $(SRCS:.c=.o)
