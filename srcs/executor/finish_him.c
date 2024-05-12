@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 21:08:17 by hedi              #+#    #+#             */
-/*   Updated: 2024/05/11 02:16:28 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 17:05:44 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exec_build(t_data *shell, char **f)
 	else if (ft_same_str(f[0], "unset", 5))
 		shell->last_return_code = ft_unset(f);
 	else if (ft_same_str(f[0], "env", 3))
-		shell->last_return_code = ft_env(shell->env);
+		shell->last_return_code = ft_env(shell->envp);
 	else if (ft_same_str(f[0], "exit", 4))
 		ft_exit(f, shell); // Note que cette fonction peut arrêter le programme.
 	else
@@ -47,21 +47,21 @@ void	exec_path(t_data *sh, t_exec *cmd, char **f, char *tmp)
 	char	*ret;
 
 	i = -1;
-	while (sh->env[++i] != NULL && sh->env)
+	while (sh->envp[++i] != NULL && sh->envp)
 	{
-		ret = ft_substr(sh->env[i], 0, 5);
+		ret = ft_substr(sh->envp[i], 0, 5);
 		if (ft_same_str_free(ret, "PATH=", 5))
 		{
 			j = 5;
-			while (sh->env && sh->env[i][++j])
+			while (sh->envp && sh->envp[i][++j])
 			{
 				k = j;
-				while (sh->env[i][j] != ':' && sh->env[i][j] && sh->env)
+				while (sh->envp[i][j] != ':' && sh->envp[i][j] && sh->envp)
 					j++;
-				ret = join_free1(ft_substr(sh->env[i], k, ((j)-k)), tmp);
-				if (sh->env[i][j] == ':')
+				ret = join_free1(ft_substr(sh->envp[i], k, ((j)-k)), tmp);
+				if (sh->envp[i][j] == ':')
 					if (access(ret, F_OK) == 0)
-						execve(ret, f, sh->env);
+						execve(ret, f, sh->envp);
 				free(ret);
 			}
 		}
@@ -80,7 +80,7 @@ void	exec_cmd(t_data *shell, t_exec *cmd)
 	// printf("%s", f[0]);
 	tmp = ft_strjoin("/", f[0]);
 	if (access(tmp, F_OK) == 0)
-		execve(tmp, f, shell->env);
+		execve(tmp, f, shell->envp);
 	else
 		exec_path(shell, cmd, f, tmp);
 	ret = join_free1(ft_strjoin("command not found: ", f[0]), "\n");

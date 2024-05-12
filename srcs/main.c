@@ -6,7 +6,7 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/11 15:03:25 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 17:05:08 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@ void	aff_val(t_data *data)
 {
 	t_exec	*cur_cmd;
 	t_token	*cur_redir;
+	int		j;
+	int		i;
 
 	cur_cmd = data->exec;
-	int j = 1;
+	j = 1;
 	while (cur_cmd && j++)
 	{
-
-		int i = -1;
+		i = -1;
 		cur_redir = cur_cmd->redir;
-		printf("full[%d] = %s\n\n\n", j,cur_cmd->full_cmd);
-		while(cur_cmd->split_cmd[++i])
-			printf("split[%d][%d] = %s\n\n\n", j,i,cur_cmd->split_cmd[i]);
+		printf("full[%d] = %s\n\n\n", j, cur_cmd->full_cmd);
+		while (cur_cmd->split_cmd[++i])
+			printf("split[%d][%d] = %s\n\n\n", j, i, cur_cmd->split_cmd[i]);
 		while (cur_redir)
 		{
 			printf("%s\n%u\n", cur_redir->word, cur_redir->type);
@@ -36,29 +37,69 @@ void	aff_val(t_data *data)
 	}
 }
 
-char **copy_envp(char **envp)
+void	trim_env(t_data *shell)
 {
-    int i = 0;
-    char **new_env;
+	t_env	*tmp;
+	int		i;
 
-    // Compter le nombre de variables d'environnement
-    while (envp[i])
-        i++;
-    
-    // Allouer de l'espace pour le nouveau tableau d'environnement, +1 pour NULL terminateur
-    new_env = malloc((i + 1) * sizeof(char *));
-    if (!new_env)
-        return (NULL);
-
-    // Copier chaque variable d'environnement
-    for (int j = 0; j < i; j++)
-        new_env[j] = ft_strdup(envp[j]);
-
-    // Assurer que le dernier élément est NULL
-    new_env[i] = NULL;
-
-    return new_env;
+	tmp = shell->env;
+	while (shell->env != NULL)
+	{
+		i = 0;
+		while (shell->env->var[i] && shell->env->var[i] != '=')
+			i++;
+		shell->env->var_name = ft_strndup(shell->env->var, i);
+		
+		if (!shell->env->var_name)
+			perror("malloc");
+		if (!shell->env->var[i++])
+			return ;
+		shell->env->val = ft_strdup(shell->env->var + i);
+		if (!shell->env->val)
+			perror("malloc");
+		shell->env = shell->env->next;
+	}
+	shell->env = tmp;
 }
+
+
+t_env	*copy_envp(char **envp, t_data *shell)
+{
+	t_env	*head;
+	t_env	*tmp;
+	int		i;
+
+	i = 0;
+	head = NULL;
+	tmp = NULL;
+	while (envp[i])
+	{
+		if (tmp == NULL)
+		{
+			tmp = malloc(sizeof(t_env));
+			if (!tmp)
+				return (NULL);
+			if (head == NULL)
+				head = tmp;
+		}
+		tmp->var = ft_strdup(envp[i]);
+		tmp->index = i;
+		tmp->next = NULL;
+		if (!tmp->var)
+			return (NULL);
+		if (envp[i + 1] != NULL)
+		{
+			tmp->next = malloc(sizeof(t_env));
+			if (!tmp->next)
+				return (NULL);
+			tmp = tmp->next;
+		}
+		i++;
+	}
+	shell->env = head;
+	return (head);
+}
+
 
 int	minishell_loop(t_data *data)
 {
@@ -72,7 +113,7 @@ int	minishell_loop(t_data *data)
 	parser(data);
 	if (data->sh_exit_loop)
 		return (-1);
-	 //aff_val(data);
+	// aff_val(data);
 	data->last_return_code = executor(data);
 	return (0);
 }
@@ -80,13 +121,21 @@ int	minishell_loop(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-
+	t_env *e;
 	// volatile sig_atomic_t signal_count = 0;
 	setup_signal_handlers(handle_sigint_interactive, handle_sigquit);
 	(void)argc;
 	(void)argv;
 	data.last_return_code = 0;
-	data.env = copy_envp(envp);
+	data.env = copy_envp(envp, &data);
+	data.envp = envp;
+	e = data.env;
+	trim_env(&data);
+	while (e)
+	{
+		printf("\n%s\n", e->var_name);
+		e = e->next;
+	}
 	while (1)
 	{
 		init_data(&data);
@@ -98,6 +147,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 	// exit_free(&data, 0); //tmp
 }
+
 
 /*
 int	main(int argc, char **argv, char **envp)

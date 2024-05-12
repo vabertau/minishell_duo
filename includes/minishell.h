@@ -31,6 +31,16 @@ typedef enum s_type
 	DQUOTE,
 }					t_type;
 
+typedef struct s_env
+{
+	int		index;
+	char **first_env;
+	char	*var;
+	char	*var_name;
+	char	*val;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_token
 {
 	int				i;
@@ -61,7 +71,8 @@ typedef struct s_data
 	t_token			*token;
 	t_type			type;
 	t_exec			*exec;
-	char			**env;
+	t_env			*env;
+	char			**envp;
 	int				*is_bq;
 	int				last_pid;
 	int				last_return_code;

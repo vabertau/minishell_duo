@@ -6,9 +6,10 @@
 /*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 00:47:00 by hedi              #+#    #+#             */
-/*   Updated: 2024/05/11 15:02:43 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/12 17:02:21 by hedi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -81,7 +82,7 @@ char **split_var(char *s, t_data *shell)
 	j = i;
 	if (s[i])
 		n = 2;
-	if (s[i] == '+' && s[i] == '=')
+	if (s[i] == '+' && s[i+1] == '=')
 		i += 2;
 	else if (s[i] == '=')
 		i++;
@@ -97,31 +98,50 @@ int	find_index_env(char *env)
 		i++;
 	return (i);
 }
+
+int	have_equal(char *env)
+{
+	int	i;
+
+	i = -1;
+	while (env[++i])
+		if (env[i] == '=')
+			return (i);
+	return (0);
+}
+
 int	var_in_env(char *s, t_data *shell)
 {
 	int		ret;
 	int		j;
-	char 	*tmp;
+	t_env 	*tmp;
 	char	**var;
 
+	
 	var = split_var(s, shell);
+	
+	tmp = shell->env;
 	if (!var)
 	{
 		perror("malloc");
 		exit_free(shell, EXIT_FAILURE);
 	}
+	
 	ret = -1;
 	j = -1;
-	while (shell->env[++j])
+	while (tmp)
 	{
-		tmp = ft_strndup(shell->env[j], find_index_env(shell->env[j]));
-		if (ft_same_str_exact_free1(tmp, var[0]))
-			ret = j;
+		if (!ft_strcmp(tmp->var_name, var[0]))
+			ret = tmp->index;
+		
+		tmp = tmp->next;
 	}
+	//printf("\ntest\n");
 	if (var[1])
 		free(var[1]);
 	free(var[0]);
 	free(var);
+	//printf("\ntest\n");
 	return (ret);
 }
 int check_plus(char *s)
@@ -133,10 +153,8 @@ int check_plus(char *s)
 		i++;
 	if (s[i] == '+')
 		return(1);
-	else if (s[i] == '=')
+	else
 		return (0);
-	else 
-		printf("error_checkplus");
 	return (-1);
 }
 
@@ -144,74 +162,90 @@ void	ft_update_env(char *str, t_data *shell, int pos)
 {
 	char **s;
 	int	index;
+	t_env	*tmp;
 
 	s = split_var(str, shell);
-	//printf("\n%s\n", str);
+	tmp = shell->env;
 	if (!s)
 		return ;
 	if (check_plus(str))
-		shell->env[pos] = join_free1(shell->env[pos], s[1]);
-	else{
-		index = find_index_env(shell->env[pos]);
-		if (shell->env[pos][index + 1] == '=' && !s[1])
+	{
+		while (tmp && tmp->index < pos)
+			tmp = tmp->next;
+		tmp->val = join_free1(tmp->val, s[0]);
+		if (!tmp->val)
+			perror("malloc");
+		free(tmp->var);
+		tmp->var = join_free1(ft_strjoin(tmp->var_name, "="),tmp->val);
+		if (!tmp->var)
+			perror("malloc");
+	}
+	else
+	{
+		while (tmp && tmp->index < pos)
+			tmp = tmp->next;
+		if (s[1] || have_equal(tmp->var))
 		{
-			free(shell->env[pos]);
-			shell->env[pos] = ft_strjoin(s[0], "=""");
+			free(tmp->val);
+			tmp->val = ft_strdup(s[1]);
+			if (!tmp->val)
+				perror("malloc");
 		}
-		free(shell->env[pos]);
-		shell->env[pos] = join_free1(ft_strjoin(s[0], "="),s[1]);
+		free(tmp->var);
+		tmp->var = join_free1(ft_strjoin(tmp->var_name, "="),tmp->val);
+		if (!tmp->var)
+			perror("malloc");
+
 	}
 	
 	
 }
 
-void ft_add_env(char *s, t_data *shell)
+void	ft_add_env(char *s, t_data *shell)
 {
-    int i = 0;
-    char **new_env;
-    char *tmp;
+	char **str = split_var(s, shell);
+	if (!str) return;
 
-    // Trouver la taille actuelle de shell->env
-    while (shell->env && shell->env[i])
-        i++;
+	t_env *new_node = malloc(sizeof(t_env));
+	if (!new_node)
+	{
+		perror("malloc");
+		return; // Gérer l'échec de l'allocation plus proprement si nécessaire
+	}
 
-    // Créer une nouvelle entrée pour la nouvelle variable
-    tmp = join_free2(join_free1(ft_strndup_var(s, ft_strlen(s)), "="), ft_strdup(ft_strchr(s, '=') + 1));
-    if (!tmp)
-        return;
+	new_node->var = join_free1(ft_strjoin(str[0], "="), str[1]);
+	new_node->var_name = ft_strdup(str[0]);
+	new_node->val = str[1] ? ft_strdup(str[1]) : NULL;
+	new_node->next = NULL;
 
-    // Allouer de la mémoire pour le nouveau tableau d'environnement
-    new_env = malloc(sizeof(char *) * (i + 2));  // +2 pour la nouvelle variable et NULL terminateur
-    if (!new_env)
-    {
-        free(tmp);
-        return;
-    }
+	if (shell->env == NULL)
+	{
+		shell->env = new_node; // Cas où la liste était vide
+		new_node->index = 0;
+	}
+	else
+	{
+		t_env *e = shell->env;
+		while (e->next != NULL)
+			e = e->next; // Parcourir jusqu'au dernier élément
+		e->next = new_node;
+		new_node->index = e->index + 1;
+	}
 
-    // Copier les anciennes valeurs
-    for (int j = 0; j < i; j++)
-        new_env[j] = shell->env[j];
-
-    // Ajouter la nouvelle variable
-    new_env[i] = tmp;
-    new_env[i + 1] = NULL;
-
-    // Libérer l'ancien tableau si nécessaire
-    free(shell->env);
-
-    // Mettre à jour l'environnement
-    shell->env = new_env;
-
-    printf("Added %s to env\n", shell->env[i]);  // Debug pour voir ce qui est ajouté
+	if (!new_node->var || !new_node->val || !new_node->var_name)
+	{
+		perror("malloc");
+		// Doit gérer la libération de la mémoire allouée précédemment
+	}
 }
 
 
 int	ft_putenv(char *s, t_data *shell)
 {
 	int pos;
-
+	
 	pos = var_in_env(s, shell);
-	//printf("\n%s\n", s);
+	printf("\n%d\n", pos);
 	if (pos > -1)
 		ft_update_env(s, shell, pos);
 	else
@@ -245,12 +279,17 @@ int	ft_export(char **split_cmd, t_data *shell)
 {
 	int	i;
 	char *tmp;
-	//printf("\n%s\n", split_cmd[1]);
+	t_env	*e;
+	e = shell->env;
+	
 	if (split_cmd[1] == NULL)
 	{
 		i = -1;
-		while (shell->env && shell->env[++i])
-			ft_printf_var_env(shell->env[i]);
+		while (e)
+		{
+			ft_printf_var_env(e->var);
+			e = e->next;
+		}
 	}
 	i = 0;
 	while (split_cmd[++i] != NULL)
