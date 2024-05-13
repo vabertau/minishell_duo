@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hedi <hedi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 17:43:54 by hzaz              #+#    #+#             */
-/*   Updated: 2024/05/09 01:07:12 by hedi             ###   ########.fr       */
+/*   Updated: 2024/05/13 13:08:12 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	fork_cmd(t_data *shell)
 	while (current_cmd != NULL)
 	{
 		pid = fork();
+		execute_signals(pid);
 		if (pid == -1)
 		{
 			perror("fork");
@@ -84,6 +85,8 @@ void	close_wait(t_data *shell)
 	{
 		waitpid(current_cmd->pid, &status, 0);
 		shell->last_return_code = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+			shell->last_return_code = return_if_sig(status, shell->last_return_code);
 		current_cmd = current_cmd->next;
 	}
 	if (shell->pipe_fds)
@@ -105,5 +108,6 @@ int	executor(t_data *shell)
 	current_cmd = shell->exec;
 	fork_cmd(shell);
 	close_wait(shell);
-	return (shell->last_return_code);
+	//if (WIFEXITED(status))
+		return (shell->last_return_code);
 }

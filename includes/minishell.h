@@ -197,6 +197,9 @@ void				setup_signal_handlers(void (*sigint_handler)(int),
 void				exec_build(t_data *shell, char **f);
 void				dup_pipe_child(t_data *shell, t_exec *cmd, int *i);
 void				setup_heredoc_handlers(void);
+void				main_signals(void);
+void				execute_signals(int pid);
+int					return_if_sig(int status, int l);
 
 int					ft_echo(char **split_cmd);
 

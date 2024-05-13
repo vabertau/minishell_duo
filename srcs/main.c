@@ -6,7 +6,7 @@
 /*   By: vabertau <vabertau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:54:44 by vabertau          #+#    #+#             */
-/*   Updated: 2024/05/12 18:12:30 by vabertau         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:28:54 by vabertau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	main(int argc, char **argv, char **envp)
 	t_data	data;
 	t_env *e;
 	// volatile sig_atomic_t signal_count = 0;
-	setup_signal_handlers(handle_sigint_interactive, handle_sigquit);
+	//setup_signal_handlers(handle_sigint_interactive, handle_sigquit);
 	(void)argc;
 	(void)argv;
 	data.last_return_code = 0;
@@ -133,6 +133,7 @@ int	main(int argc, char **argv, char **envp)
 	trim_env(&data);
 	while (1)
 	{
+		main_signals();
 		init_data(&data);
 		minishell_loop(&data);
 		// if (!data.sh_exit_loop)
